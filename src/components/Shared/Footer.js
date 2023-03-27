@@ -16,7 +16,7 @@ export const Footer = () => {
                hearing aid program is designed to meet the needs of people who otherwise <br/>
                would not be able to afford hearing health solutions.</p>
     </div>
-    <span>© Miracle-Ear, 2022 - VAT NO. 148890720</span>
+    <span>© Eary, 2023 - VAT NO. 148890720</span>
     </div>
       </div>
   )

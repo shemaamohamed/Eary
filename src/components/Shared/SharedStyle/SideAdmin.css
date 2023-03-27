@@ -1,19 +1,26 @@
 .side{
     display:inline-flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     width: 10%;
     height: 90vh;
     background:#008080;
+    
 
 
 
 }
 .side button{
-    margin: 40px 0px;
-    padding: 8px 5px;
+    margin: 40px 10px;
+    padding: 20px 5px;
     color: white;
     background: gray;
     border: white;
+
+}
+.side button:hover{
+    background:black;
+    cursor: pointer;
+
 
 }
