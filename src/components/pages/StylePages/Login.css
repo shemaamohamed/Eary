@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+  
+}
+@font-face {
+    font-family:"ubuntu Bold" ;
+    src: url(/src/components/Assets/fonts/Ubuntu/Ubuntu-Bold.ttf);
+}
+@font-face {
+    font-family:"ubuntu reg" ;
+    src: url(/src/components/Assets/fonts/Ubuntu/Ubuntu-Regular.ttf);
+}
+.Login{
+    font-family: "ubuntu Bold";
+    
+}
+.cover input:focus::placeholder{
+    color: transparent;
+   
+   
+}
+.cover input{
+      border: none;
+      background-color:rgb(229, 226, 226);
+      height: 4em;
+      width: 80%;
+      border-radius:0.25 ;
+      -webkit-border-radius:0.25 ;
+      -moz-border-radius:0.25 ;
+      -ms-border-radius:0.25 ;
+      -o-border-radius:0.25 ;
+      text-align: center;
+      padding: 2em;
+      font-family: "ubuntu reg";
+      padding: 20px 30px;
+}
+
+.cover{
+  background-color:white ;
+  width: 30em;
+  height: 35em;
+  position: absolute;
+  border-radius: 1em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  box-shadow: 0 0.1em 1.5em rgb(156, 156, 156) ;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px;
+ 
+  
+}
+.page {
+    height:60vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.login-btn{
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    background:#008080;
+    border: none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    padding: 5px;
+    width: 250px;
+}
+.login-btn:hover{
+    color: black;
+}
+
+
+.create-account{
+    text-decoration: none;
+    color: #008080;
+}
+.create-account:hover{
+    color: black;
+}
+
+
+.Target {
+position: relative;
+bottom: 5%;
+}
+.Target button{
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    background:#008080;
+    border: none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    padding: 5px;
+    margin: 0px 50px;
+    width: 100px;
+}
+.Target button:hover{
+    color: black;
+}
