@@ -1,14 +1,20 @@
 .footer{
+    position: fixed;
+    left: 0;
+    /* top: 0; */
+    bottom: 0;
+    color: white;
+    width: 100%;
+    /* height: 20vh; */
+    background: #008080;
+
+
+
+}
+.footer1{
     position: relative;
-   left: 0;
-   bottom: 0;
-   color: white;
-   width: 100%;
-   height: 25vh;
-   background:#008080;
-
-
-
+    width: 100%;
+    height: 100%;
 }
 .aboutus p{
     margin: 10px 100px;
@@ -22,8 +28,9 @@
     font-family:"Lucida Console", "Courier New", monospace;
 
 }
-.footer span{
+.footer .footer1 span{
     position: absolute;
-    bottom: 0px;
     left: 50%;
+    bottom: 0;
+
 }

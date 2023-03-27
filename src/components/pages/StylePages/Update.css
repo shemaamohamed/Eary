@@ -17,8 +17,7 @@
 .box-update{
     display: flex;
     flex-direction: column;
-    width: 30%;
-
+    width: 50%;
 }
 .box-update input{
     margin: 15px 0px;
