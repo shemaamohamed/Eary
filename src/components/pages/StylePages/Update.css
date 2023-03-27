@@ -9,11 +9,13 @@
 
 }
 .update h1{
+    position: relative;
     background: #008080;
     color: white;
     margin: 2px ;
 
 }
+
 .box-update{
     display: flex;
     flex-direction: column;

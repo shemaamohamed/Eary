@@ -1,7 +1,6 @@
 import React from 'react'
 import "../Shared/SharedStyle/Footer.css" 
-import {faFacebookF} from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 
 
