@@ -17,8 +17,6 @@ import './SharedStyle/Header.css'
             
             
         </ul>  
-        
-        
          </div>
       
 
