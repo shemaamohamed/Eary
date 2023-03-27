@@ -5,13 +5,14 @@ import Ear from "../../Assets/Images/EARR.png"
 export const AddTest = () => {
   return (
     <div className='add_test'>
-    <div className='add_A'>
-    <div className='add_audio'>
+        <div className='add_audio'>
         
         <h4> Upload audio</h4>
         <input type="file" name="myfile" />
      
-    </div>
+       </div>
+    <div className='add_A'>
+    
     <div className='add_q'>
     <div id='question'>
             <input type='text' placeholder='Question'></input>
@@ -28,10 +29,15 @@ export const AddTest = () => {
         <div id='answer4'>
             <input type='text' placeholder='Answer4'></input>
         </div>
+        <button id='add-T'>AddTest</button>
+
     </div>
-    <button id='add-T'>AddTest</button>
+    
     </div>
     <img className='Ear' src={Ear} alt='#'></img>
+
+
+    
     </div>
   )
 }
