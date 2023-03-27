@@ -8,6 +8,7 @@
    
     height: 50px;
     background:#008080;
+    position: relative;
 
 }
 .img_logo{
@@ -28,8 +29,10 @@ img{
 
 }
 .img_user{   
+    position: relative;
   
  }
+ 
  .NavBar .content{
     display:flex;
     margin: auto;
@@ -70,5 +73,49 @@ img{
 .NavBar  .content ul li  :hover{
     color: #008080;
     background:gray;
-    transform: scale(1.4);
+    transform: scale(1.3);
+}
+#navside{
+    color: black;
+    position: absolute;
+    right: 0;
+    text-decoration: none;
+    width: 20%;
+    z-index: 1;
+    display: none;
+    
+
+    
+
+}
+.navsideA {
+    display: block;
+
+}
+#navside li{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background: gray;
+    border: white solid 2px;
+    width: 70%;
+
+
+
+    
+}
+#navside li:hover{
+    background:black;
+    cursor: pointer;
+    transform: scale(1.1);
+
+}
+#navside li a{
+    text-decoration: none;
+    margin: 10px 0px;
+    text-transform: capitalize;
+    padding: 3px 0px;
+    color: white;
+    font-family:"Lucida Console", "Courier New", monospace;
+
 }
