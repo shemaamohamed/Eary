@@ -1,0 +1,36 @@
+.update{
+    text-align: center;
+     margin: auto; 
+    width: 86%;
+    display: flex;
+    justify-content: center;
+    font-family:"Lucida Console", "Courier New", monospace;
+
+
+}
+.update h1{
+    background: #008080;
+    color: white;
+    margin: 2px ;
+
+}
+.box-update{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+
+}
+.box-update input{
+    margin: 15px 0px;
+    height: 60px;
+    text-align: center;
+}
+.box-update button{
+    border-radius: 9px;
+    width: 50%;
+    height: 30px;
+    border-color: white;
+   margin: auto;
+   background:#008080 ;
+   color: white
+}
