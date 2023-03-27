@@ -1,0 +1,58 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+.NavBar{
+   
+    height: 50px;
+    background:#008080;
+
+}
+img{
+    width: 37px;
+    height: 40px;
+    margin: 6px 0px;
+
+
+}
+.img_user{   
+  
+ }
+ .NavBar .content{
+    display:flex;
+    margin: auto;
+    
+    width: 65%;
+
+ }
+
+.NavBar  .content ul{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.NavBar .content ul li{
+    text-decoration: none;
+    display: flex;
+    
+    
+    
+
+
+    
+}
+.NavBar  .content ul li a{
+    text-decoration: none;
+    color: white; 
+    margin: 0px 90px;
+    text-transform: capitalize;
+    font-family:"Lucida Console", "Courier New", monospace;
+
+   
+
+
+}
