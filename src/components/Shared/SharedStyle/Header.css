@@ -10,6 +10,16 @@
     background:#008080;
 
 }
+.img_logo{
+    position: relative;
+    animation: mymove 6s ;
+   animation-iteration-count: infinite;
+}
+@keyframes mymove {
+    from {left: 0px;}
+    to {left:20px;}
+    
+  }
 img{
     width: 37px;
     height: 40px;

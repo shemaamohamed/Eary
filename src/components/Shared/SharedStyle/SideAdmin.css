@@ -1,0 +1,19 @@
+.side{
+    display:inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 10%;
+    height: 90vh;
+    background:#008080;
+
+
+
+}
+.side button{
+    margin: 40px 0px;
+    padding: 8px 5px;
+    color: white;
+    background: gray;
+    border: white;
+
+}
