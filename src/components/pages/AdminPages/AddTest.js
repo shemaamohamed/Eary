@@ -1,9 +1,11 @@
 import React from 'react'
 import "../StylePages/AddTest.css"
+import Ear from "../../Assets/Images/EARR.png"
 
 export const AddTest = () => {
   return (
     <div className='add_test'>
+    <div className='add_A'>
     <div className='add_audio'>
         
         <h4> Upload audio</h4>
@@ -28,7 +30,8 @@ export const AddTest = () => {
         </div>
     </div>
     <button id='add-T'>AddTest</button>
-
+    </div>
+    <img className='Ear' src={Ear} alt='#'></img>
     </div>
   )
 }
