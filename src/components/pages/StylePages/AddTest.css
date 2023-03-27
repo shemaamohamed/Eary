@@ -34,8 +34,8 @@
   .add_q{
    
   }
-  .add_q input{
-    height: 40px;
+  .add_q input {
+    height: 30px;
     width: 50%;
     border: #008080 solid 1px;
     margin: 5px 0px;
@@ -54,10 +54,14 @@
     background: gray;
     color: white;
 
+
   }
   .add_test button:hover{
     color: white;
     background:black;
     transform: scale(1.3);
 
+  }
+  #answer1 , #answer2 ,#answer3 ,#answer4{
+    display: flex;
   }

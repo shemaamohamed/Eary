@@ -15,19 +15,26 @@ export const AddTest = () => {
     
     <div className='add_q'>
     <div id='question'>
-            <input type='text' placeholder='Question'></input>
+            <input type='text' placeholder='Question' className='Answer'></input>
         </div>
         <div id='answer1'>
-            <input type='text' placeholder='Answer1'></input>
+            <input type='text' placeholder='Answer1' className='Answer'></input>
+            <input id='Answer1' type='radio' ></input>
         </div>
         <div id='answer2'>
-            <input type='text'placeholder='Answer2' ></input>
+            <input type='text'placeholder='Answer2' className='Answer' ></input>
+            <input id='Answer2' type='radio'></input>
+
         </div>
         <div id='answer3'>
-            <input type='text' placeholder='Answer3'></input>
+            <input type='text' placeholder='Answer3' className='Answer'></input>
+            <input  id='Answer3'type='radio'></input>
+
         </div>
         <div id='answer4'>
-            <input type='text' placeholder='Answer4'></input>
+            <input type='text' placeholder='Answer4' className='Answer'></input>
+            <input id='Answer4' type='radio'></input>
+
         </div>
         <button id='add-T'>AddTest</button>
 

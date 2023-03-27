@@ -26,10 +26,11 @@ import './SharedStyle/Header.css'
          <div className='content'>
          <img className='img_logo' src={image1} alt='#'></img> 
         <ul>
-           <li> <a href='#'> home</a></li>
+        <li> <a href='#'> home</a></li>
             <li> <a href='#'> take test </a></li>
             <li> <a href='#'> about us</a></li>
             <li> <a href='#' > contact us</a></li>
+ 
             <li>  <img className='img_user' src={User1} alt='#'   onClick={on}  ></img>
              
 
@@ -40,10 +41,11 @@ import './SharedStyle/Header.css'
         
          </div>
          <ul id='navside'>
-           <li> <a href='#'> home</a></li>
-            <li> <a href='#'> take test </a></li>
-            <li> <a href='#'> about us</a></li>
-            <li> <a href='#' > contact us</a></li>
+           
+            <li> <a href='#'> UpdateProfile</a></li>
+            <li> <a href='#'> History </a></li>
+            <li> <a href='#'> Logout</a></li>
+          
         </ul> 
       
 
