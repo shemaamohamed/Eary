@@ -1,0 +1,11 @@
+.manage_user{
+    position: fixed;
+  top: 9%;
+  width: 100%;
+  text-align: center;
+}
+#search{
+    width: 30%;
+    height: 30px;
+    border: solid 2px #008080;
+}
