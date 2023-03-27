@@ -1,10 +1,10 @@
 .update{
     text-align: center;
      margin: auto; 
-    width: 86%;
     display: flex;
     justify-content: center;
     font-family:"Lucida Console", "Courier New", monospace;
+    width: 66%;
 
 
 }
