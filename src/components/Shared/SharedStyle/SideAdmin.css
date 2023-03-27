@@ -2,7 +2,7 @@
     display:inline-flex;
     flex-direction: column;
     /* justify-content: center; */
-    width: 10%;
+    width: 13%;
     height: 90vh;
     background:#008080;
     
@@ -16,6 +16,8 @@
     color: white;
     background: gray;
     border: white;
+    border-radius: 4px;
+
 
 }
 .side button:hover{

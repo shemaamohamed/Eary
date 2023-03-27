@@ -1,0 +1,58 @@
+.add_audio{
+    
+    
+    display: flex;
+    /* flex-flow: wrap; */
+    gap: 17px;
+}
+.add_test{
+    position: fixed;
+    left: 15%;
+    top: 9%;
+    width: 50%;
+    height: 60vh;
+    text-align: center;
+
+
+}
+.btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  .add_q{
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+  }
+  .add_q input{
+    height: 40px;
+    width: 50%;
+    border: #008080 solid 1px;
+    margin: 5px 0px;
+  }
+  .add_test button{
+    border: #008080 solid 1px;
+    height: 30px;
+    width: 20%;
+    border-radius: 4px;
+    background: gray;
+    color: white;
+
+  }

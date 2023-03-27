@@ -6,6 +6,7 @@ import {Register}from "./components/pages/Login/Register"
 import { SideAdmin } from './components/Shared/SideAdmin';
 import "./components/Shared/SharedStyle/App.css"
 import Login from './components/pages/Login/Login';
+import { AddTest } from './components/pages/AdminPages/AddTest';
 
 
 
@@ -13,7 +14,9 @@ function App() {
   return (
     <div className='app' >
       <Header/>
-      <Login/>
+      <AddTest/>
+      <SideAdmin/>
+    
       <Footer/>
       
     </div>
