@@ -24,10 +24,12 @@
     
   object-fit: scale-down;
   position: fixed;
-  width: 100%;
-  height: 18vh;
-  display: flex;
-  margin: auto;
+  width: 150px;
+  height: 150px;
+  -moz-box-shadow: 9px -9px #008080;
+  -webkit-box-shadow: 8px -8px #008080;
+  -o-box-shadow: 7px -7px #008080;
+  border-radius: 44px;
  }
   .add_q{
    
