@@ -11,7 +11,7 @@ export const Update = () => {
         <input typeof='text' placeholder='Phone Number'></input>
         <input typeof='text' placeholder='password'></input>
         <input typeof='text' placeholder='confirm password'></input>
-        <button>Update</button>
+        <button > <a>Update</a></button>
 
       </div>
         

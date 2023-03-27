@@ -34,3 +34,7 @@
    background:#008080 ;
    color: white
 }
+.box-update button:hover{
+    color: #008080;
+    background:gray;
+}

@@ -55,4 +55,9 @@ img{
    
 
 
+}   
+.NavBar  .content ul li  :hover{
+    color: #008080;
+    background:gray;
+    transform: scale(1.5);
 }
