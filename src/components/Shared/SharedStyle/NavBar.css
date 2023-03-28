@@ -83,5 +83,16 @@ color: white;
 .sideNavNone{
     display: none;
 }
+.navbar-brand{
+    position: relative;
+    animation: mymove 9s  ;
+    animation-iteration-count: infinite;
+    transition-delay: 1s;
+}
+@keyframes mymove {
+ from {scale: 1.0;}
+ to {scale: 1.7;}
+ 
+}
 
 
