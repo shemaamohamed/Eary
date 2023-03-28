@@ -8,6 +8,8 @@ import  Home  from './components/pages/UserPages/Home';
 import "./components/Shared/SharedStyle/App.css"
 import NavBar from './components/Shared/NavBar';
 import Login from './components/pages/Login/Login';
+import { ManageUser } from './components/pages/AdminPages/ManageUser';
+import { AddTest } from './components/pages/AdminPages/AddTest';
 
 
 
@@ -18,7 +20,9 @@ function App() {
 
       {/* <Header/> */}
       <NavBar></NavBar>
-      <Login></Login>
+      <AddTest></AddTest>
+      <SideAdmin></SideAdmin>
+      {/* <Login></Login> */}
       <Footer/>
 
       
