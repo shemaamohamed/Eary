@@ -5,11 +5,11 @@
 }
 @font-face {
     font-family:"ubuntu Bold" ;
-    src: url(/src/components/Assets/fonts/Ubuntu/Ubuntu-Bold.ttf);
+    src: url(/src/components/Assets/Fonts/Ubuntu/Ubuntu-Bold.ttf);
 }
 @font-face {
     font-family:"ubuntu reg" ;
-    src: url(/src/components/Assets/fonts/Ubuntu/Ubuntu-Regular.ttf);
+    src: url(/src/components/Assets/Fonts/Ubuntu/Ubuntu-Regular.ttf);
 }
 .Login{
     font-family: "ubuntu Bold";
@@ -52,7 +52,6 @@
   justify-content: space-around;
   align-items: center;
   padding: 5px;
-  margin: 20px;
  
   
 }

@@ -1,10 +1,14 @@
 .update{
+    
+    /* margin: auto; */
+    /* justify-content: center; */
+    /* font-family: "Lucida Console", "Courier New", monospace; */
+    width: 40%;
+    /* margin: 0px 30px; */
+    /* padding: 0px 36px; */
+    position: fixed;
+    left: 44%;
     text-align: center;
-     margin: auto; 
-    display: flex;
-    justify-content: center;
-    font-family:"Lucida Console", "Courier New", monospace;
-    width: 66%;
 
 
 }
@@ -19,12 +23,15 @@
 .box-update{
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 41%;
+    height: 55vh;
+    padding: 3px;
 }
 .box-update input{
     margin: 15px 0px;
     height: 60px;
     text-align: center;
+    border: #008080 solid 1px;
 }
 .box-update button{
     border-radius: 9px;
