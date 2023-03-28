@@ -37,15 +37,12 @@
 }
 
 .cover{
-  background-color:white ;
+  margin: 10PX 0PX;
+ 
   width: 30em;
   height: 30em;
   position: absolute;
-  border-radius: 1em;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
+
   box-shadow: 0 0.1em 1.5em rgb(156, 156, 156) ;
   display: flex;
   flex-direction: column;
@@ -109,7 +106,15 @@ bottom: 5%;
     padding: 5px;
     margin: 0px 50px;
     width: 100px;
+    animation: example 2s;
+    animation-iteration-count: infinite;
+
 }
+@keyframes example {
+    from {background:#008080;}
+    to {background: gray;}
+  }
+
 .Target button:hover{
     color: black;
 }

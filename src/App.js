@@ -15,9 +15,7 @@ function App() {
   return (
     <div className='app' >
       <Header/>
-      <ManageUser/>
-      <SideAdmin/>
-    
+      <Login/>
       <Footer/>
       
     </div>
