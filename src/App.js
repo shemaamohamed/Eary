@@ -13,16 +13,13 @@ import NavBar from './components/Shared/NavBar';
 function App() {
   return (
     <div className='app' >
-<<<<<<< Updated upstream
-      <Header/>
 
-      <Footer/>
-=======
+
       {/* <Header/> */}
       <NavBar></NavBar>
       <Home></Home>
       {/* <Footer/> */}
->>>>>>> Stashed changes
+
       
     </div>
   );
