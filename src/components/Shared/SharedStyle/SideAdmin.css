@@ -24,6 +24,7 @@
 .side button:hover{
     background:black;
     cursor: pointer;
+    color: white;
 
 
 }
