@@ -73,6 +73,10 @@ img{
 .NavBar  .content ul li  :hover{
     color: #008080;
     background:gray;
+<<<<<<< HEAD
+    transform: scale(1.4);
+}
+=======
     transform: scale(1.3);
 }
 #navside{
@@ -119,3 +123,4 @@ img{
     font-family:"Lucida Console", "Courier New", monospace;
 
 }
+>>>>>>> 92d62d76d5bb2fe8d10095b1171baeff85efd09c
