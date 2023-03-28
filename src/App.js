@@ -20,9 +20,13 @@ function App() {
 
       {/* <Header/> */}
       <NavBar></NavBar>
+<<<<<<< Updated upstream
       <AddTest></AddTest>
       <SideAdmin></SideAdmin>
       {/* <Login></Login> */}
+=======
+      <Home></Home>
+>>>>>>> Stashed changes
       <Footer/>
 
       
