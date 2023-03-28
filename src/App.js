@@ -7,6 +7,7 @@ import { SideAdmin } from './components/Shared/SideAdmin';
 import  Home  from './components/pages/UserPages/Home';
 import "./components/Shared/SharedStyle/App.css"
 import NavBar from './components/Shared/NavBar';
+import Login from './components/pages/Login/Login';
 
 
 
@@ -17,8 +18,8 @@ function App() {
 
       {/* <Header/> */}
       <NavBar></NavBar>
-      <Home></Home>
-      {/* <Footer/> */}
+      <Login></Login>
+      <Footer/>
 
       
     </div>

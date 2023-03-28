@@ -49,14 +49,34 @@
   justify-content: space-around;
   align-items: center;
   padding: 5px;
+  z-index: -1;
  
   
 }
+.register{
+    position: absolute;
+    left: 0;
+    font-size: 20px;
+    margin: 46px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    
+}
+.register h3{
+    text-align: center;
+}
+.register button{
+    color: white;
+    background: gray;
+    border: solid 1px #008080;
+    border-radius: 20px;
+}
 .page {
     height:60vh;
-    width: 100%;
+    width: 70%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     
 }
 
@@ -64,7 +84,7 @@
     cursor: pointer;
     font-size: 24px;
     color: white;
-    background:#008080;
+    background:gray;
     border: none;
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -81,7 +101,7 @@
 
 .create-account{
     text-decoration: none;
-    color: #008080;
+    color: gray;
 }
 .create-account:hover{
     color: black;
@@ -96,7 +116,7 @@ bottom: 5%;
     cursor: pointer;
     font-size: 24px;
     color: white;
-    background:#008080;
+    background:gray;
     border: none;
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -110,11 +130,33 @@ bottom: 5%;
     animation-iteration-count: infinite;
 
 }
-@keyframes example {
-    from {background:#008080;}
-    to {background: gray;}
-  }
+
 
 .Target button:hover{
     color: black;
 }
+.bg {
+    animation:slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(170deg,white 40%,#008080 10%);
+    bottom:0;
+    left:-100%;
+    opacity: 1.5;
+    position:fixed;
+    right:-60%;
+    top:0;
+    z-index:-1;
+  }
+  
+  .bg2 {
+    animation-direction:alternate-reverse;
+    animation-duration:6s;
+  }
+  
+  .bg3 {
+    animation-duration:5s;
+  }
+  
+ 
+  
+
+ 
