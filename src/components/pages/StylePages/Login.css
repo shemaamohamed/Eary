@@ -39,7 +39,7 @@
 .cover{
   background-color:white ;
   width: 30em;
-  height: 35em;
+  height: 30em;
   position: absolute;
   border-radius: 1em;
   -webkit-border-radius: 1em;
@@ -52,6 +52,7 @@
   justify-content: space-around;
   align-items: center;
   padding: 5px;
+  margin: 20px;
  
   
 }
