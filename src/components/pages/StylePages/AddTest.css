@@ -9,10 +9,10 @@
     WIDTH: 70%;
 }
 .add_test{
-  position: fixed;
+  position: absolute;
   left: 15%;
   top: 9%;
-  width: 100%;
+  width: 80%;
   /* height: 60vh; */
   text-align: center;
 
@@ -23,7 +23,7 @@
  .Ear{
     
   object-fit: scale-down;
-  position: fixed;
+  position: absolute;
   width: 150px;
   height: 150px;
   -moz-box-shadow: 9px -9px #008080;

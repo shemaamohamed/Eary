@@ -1,14 +1,20 @@
 .update{
     
-    /* margin: auto; */
-    /* justify-content: center; */
-    /* font-family: "Lucida Console", "Courier New", monospace; */
+   
+    font-family: "Lucida Console", "Courier New", monospace;
     width: 40%;
     /* margin: 0px 30px; */
     /* padding: 0px 36px; */
-    position: fixed;
-    left: 44%;
+    position: absolute;
+    left: 50%;
+    /* right: 10%; */
+    /* TOP: -118px; */
+    /* BOTTOM: 100%; */
+    transform: translate(-50%, -50%);
     text-align: center;
+    bottom: 0;
+    top: 50%;
+
 
 
 }
@@ -21,11 +27,15 @@
 }
 
 .box-update{
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     width: 41%;
     height: 55vh;
-    padding: 3px;
+    padding: 3px; */
+    display: flex;
+    flex-direction: column;
+    
+   
 }
 .box-update input{
     margin: 15px 0px;

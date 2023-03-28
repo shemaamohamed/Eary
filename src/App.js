@@ -20,14 +20,16 @@ function App() {
 
       {/* <Header/> */}
       <NavBar></NavBar>
-<<<<<<< Updated upstream
-      <AddTest></AddTest>
-      <SideAdmin></SideAdmin>
+      {/* <SideAdmin></SideAdmin>
+      <ManageUser></ManageUser> */}
+      {/* <AddTest></AddTest> */}
+     {/* <Update></Update> */}
+      {/* <SideAdmin></SideAdmin> */}
+      {/* <Register></Register> */}
+     
       {/* <Login></Login> */}
-=======
       <Home></Home>
->>>>>>> Stashed changes
-      <Footer/>
+      {/* <Footer/> */}
 
       
     </div>

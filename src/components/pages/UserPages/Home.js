@@ -77,7 +77,9 @@ const Home = () => {
     <h2>Do you have hearing loss?</h2>
     <p>If you're not sure — maybe you've started to think you do, or people close to you have said you might - take the<a href='#' className='test_link'> free online hearing test.</a></p>
     <img src={image4} className='w-75 h-75'></img>
+    
 </div>
+
     </div>
   )
 }
