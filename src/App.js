@@ -10,6 +10,7 @@ import NavBar from './components/Shared/NavBar';
 import Login from './components/pages/Login/Login';
 import { ManageUser } from './components/pages/AdminPages/ManageUser';
 import { AddTest } from './components/pages/AdminPages/AddTest';
+import History from './components/pages/UserPages/History';
 
 
 
@@ -18,18 +19,9 @@ function App() {
     <div className='app' >
 
 
-      {/* <Header/> */}
+
       <NavBar></NavBar>
-      {/* <SideAdmin></SideAdmin>
-      <ManageUser></ManageUser> */}
-      {/* <AddTest></AddTest> */}
-     {/* <Update></Update> */}
-      {/* <SideAdmin></SideAdmin> */}
-      {/* <Register></Register> */}
-     
-      {/* <Login></Login> */}
-      <Home></Home>
-      {/* <Footer/> */}
+      <History></History>
 
       
     </div>
