@@ -21,8 +21,9 @@ function App() {
 
 
       <NavBar></NavBar>
-      <History></History>
-
+      {/* <SideAdmin></SideAdmin> */}
+      <ManageUser></ManageUser>
+      {/* <AddTest></AddTest> */}
       
     </div>
   );
