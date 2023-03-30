@@ -1,0 +1,61 @@
+
+.wave {
+    position: relative;
+    background: transparent url(../../Assets/Images/animated-soundwaves-lg.png) repeat-x;
+    background-position: 0 0;
+    height: 20vh;
+    background-size: cover;
+    animation: slide 30s linear infinite;
+    -webkit-animation: slide 30s linear infinite;
+    margin-top: 100px;
+    
+}
+@keyframes slide{ 
+ from{
+    background-position: 0 0;
+ }
+ to{
+    background-position: 100% 0;
+ }
+}
+.question h2{
+    padding: 5px 10px ;
+    font-size: 40px;
+    color: white;
+    width: 100%;
+    background-color: #008080d5;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.question {
+   position: absolute;
+   top: 80%;
+   left: 40%;
+}
+.answers label{
+    color: black !important;
+    
+
+}
+.answers .btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 10px;
+    padding: 5px;
+}
+.answers label{
+    color: white !important;
+    background-color: #008080;
+}
+.answers label:checked{
+    color: black;
+    background-color: #008080;
+
+}
+.answers input[type="radio"]:checked+label {
+    background-color: #bbb;
+  }

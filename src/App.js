@@ -11,6 +11,7 @@ import Login from './components/pages/Login/Login';
 import { ManageUser } from './components/pages/AdminPages/ManageUser';
 import { AddTest } from './components/pages/AdminPages/AddTest';
 import History from './components/pages/UserPages/History';
+import Exam from './components/pages/UserPages/Exam';
 
 
 
@@ -21,7 +22,7 @@ function App() {
 
 
       <NavBar></NavBar>
-      <History></History>
+      <Exam></Exam>
 
       
     </div>
