@@ -50,6 +50,7 @@
 .answers label{
     color: white !important;
     background-color: #008080;
+    border: none;
 }
 .answers label:checked{
     color: black;
@@ -57,5 +58,8 @@
 
 }
 .answers input[type="radio"]:checked+label {
+    background-color: #bbb;
+  }
+  .answers input[type="radio"]:hover+label {
     background-color: #bbb;
   }

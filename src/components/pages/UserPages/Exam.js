@@ -8,7 +8,7 @@ const Exam = () => {
     <div className='wave'>
         
     <div className='question'>
-            <h2> what did you hear ? </h2>
+            <h2> What did you hear ? </h2>
                   <div className='answers'>
 
                 <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off"/>
