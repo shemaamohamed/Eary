@@ -1,22 +1,12 @@
 .update{
-    
-   
     font-family: "Lucida Console", "Courier New", monospace;
     width: 40%;
-    /* margin: 0px 30px; */
-    /* padding: 0px 36px; */
     position: absolute;
     left: 50%;
-    /* right: 10%; */
-    /* TOP: -118px; */
-    /* BOTTOM: 100%; */
     transform: translate(-50%, -50%);
     text-align: center;
     bottom: 0;
     top: 50%;
-
-
-
 }
 .update h1{
     position: relative;

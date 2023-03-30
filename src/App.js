@@ -22,7 +22,7 @@ function App() {
 
 
       <NavBar></NavBar>
-      <Exam></Exam>
+      <History></History>
 
       
     </div>

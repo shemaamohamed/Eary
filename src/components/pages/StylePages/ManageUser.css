@@ -1,11 +1,55 @@
 .manage_user{
-    position: fixed;
-  top: 9%;
-  width: 100%;
-  text-align: center;
+
+  
+  /* height: 60vh; */
+}
+.manage input{
+  width: 50%;
+  height: 35px;
+  border: solid 1px #008080;
+  margin: 7px 0px;
+}
+.manage input:hover{
+  scale:1.2;
+}
+.manage{
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.active{
+ 
+}
+.btn-up , .users button{
+  color: white;
+    background: #008080;
+    border-radius: 8px;
+    width:35%;
+    height: 40px;
+    border: white;
+    text-transform: capitalize;
+}
+.btn-up:hover , .users button:hover{
+  background: gray;
+  color: white;
+
 }
 #search{
-    width: 30%;
-    height: 30px;
-    border: solid 2px #008080;
+  text-align: center;
+}
+.users{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0px;
+  text-align: center;
+}
+.users table{
+  width:90%;
+}
+
+ td ,th {
+  padding: 9px;
 }
