@@ -1,0 +1,46 @@
+question table [
+Id (auto incremented),
+Audio (requird),
+RightAnswer (requird),
+Wrong1 (requird),
+Wrong2 (requird),
+Wrong3 (requird),
+Discription (optional),
+exam_id (foreign key)
+]
+
+user table [
+Id (auto incremented),
+UserName (requird , unique),
+Email (requird , unique),
+Phone (optional , unique),
+Password (requird),
+UserRole (requird),
+IsActivated (defualt false),
+IsAccepted (defualt false),
+Score
+]
+
+histoy table[
+user_id (requird),
+exam_id (requird),
+quistion_id (requird),
+Id (composite primary key[user_id , exam_id , quistion_id]),
+Answer (requird)
+]
+
+exam table[
+Id (auto incremented),
+Name (requird , unique),
+Discription (optional),
+number_of_questions
+]
+
+
+questions controller [GET,POST,PUT,DELETE]
+
+user controller      [GET,POST,PUT,DELETE]
+
+histoy controller    [GET,POST,DELETE]
+
+exam controller      [GET,POST,PUT,DELETE]
