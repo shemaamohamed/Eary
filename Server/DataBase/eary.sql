@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2023 at 10:07 AM
+-- Generation Time: Apr 14, 2023 at 06:25 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -28,10 +28,17 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `history` (
-  `quistion_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `quistion_id` varchar(50) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
   `answer` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `history`
+--
+
+INSERT INTO `history` (`quistion_id`, `user_id`, `answer`) VALUES
+('1', '1', 'A');
 
 -- --------------------------------------------------------
 
@@ -40,7 +47,7 @@ CREATE TABLE `history` (
 --
 
 CREATE TABLE `questions` (
-  `id` int(11) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `Audio` varchar(500) NOT NULL,
   `RightAnswer` varchar(200) NOT NULL,
   `Wrong1` varchar(200) NOT NULL,
@@ -56,7 +63,7 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `UserName` varchar(30) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Phone` varchar(11) DEFAULT NULL,
@@ -91,22 +98,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `Email` (`Email`),
   ADD UNIQUE KEY `UserName` (`UserName`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `questions`
---
-ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

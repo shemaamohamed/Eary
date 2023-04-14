@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
+const fs = require("fs");
 const cors = require('cors');
 const env = require("dotenv").config;
 // require('./DataBase/dbconnection');
@@ -24,8 +24,6 @@ const quistionsRoute = require('./Routes/quistionRoute.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 

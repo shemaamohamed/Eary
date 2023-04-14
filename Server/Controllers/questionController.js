@@ -1,4 +1,17 @@
 const multer = require('multer');
+const fs = require("fs");
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './Audios');
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${req.body.id} ${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage: storage }).single("audio");
 
 const quistions = [];
 
@@ -12,19 +25,6 @@ exports.get_quistions = (req, res) => {
 };
 
 exports.post_quistions = (req, res) => {
-
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, './Audios');
-        },
-        filename: function (req, file, cb) {
-            cb(null, file.originalname);
-        }
-    });
-    const upload = multer({ storage: storage }).single("audio");
-
-
-
 
     upload(req, res, (err) => {
         const data = req.body;
@@ -51,17 +51,32 @@ exports.post_quistions = (req, res) => {
 };
 
 exports.put_quistions = (req, res) => {
-    const data = req.body;
-    const qstn = quistions.find(q => q.id === data.id);
-    if (!qstn) {
-        res.sendStatus(404);
-    }
-    else {
-        qstn.text = data.text;
-        qstn.Audio = data.Audio;
-        qstn.rightAnswer = data.rightAnswer;
-        res.send("element updated");
-    }
+
+    upload(req, res, (err) => {
+        const data = req.body;
+        const file = req.file;
+        const qstn = quistions.find(q => q.id === data.id);
+        if (err) {
+            res.status(400).send("Something went wrong!");
+        }
+        else if (!qstn) {
+            res.sendStatus(404);
+        }
+        else {
+            qstn.text = data.text || qstn.text;
+            qstn.rightAnswer = data.rightAnswer || qstn.rightAnswer;
+            if (file) {
+                fs.unlink(qstn.Audio, (err) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                });
+                qstn.Audio = file.path;
+            }
+            res.send("element updated");
+        }
+    });
 
 };
 
@@ -73,10 +88,16 @@ exports.delete_quistions = (req, res) => {
         res.sendStatus(404);
     }
     else {
+
+        fs.unlink(qstn.Audio, (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+        });
         quistions.splice(qstn_index, 1);
         res.send("element deleted");
 
     }
 
 };
-
