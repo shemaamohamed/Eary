@@ -3,25 +3,45 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const env = require("dotenv").config;
-require('./DataBase/dbconnection');
+// require('./DataBase/dbconnection');
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './Audios');
+    },
+    filename: function (req, file, cb) {
+        cb(null, `1 ${file.originalname}`);
+    }
+});
+const upload = multer({ storage: storage }).single("audio");
 
 const quistionsRoute = require('./Routes/quistionRoute.js');
-const userRouter = require('./Routes/userRoute');
-const webRouter = require('./routes/webRoute');
+// const userRouter = require('./Routes/userRoute.js');
+// const webRouter = require('./Routes/webRoute.js');
 
 
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use('/api', userRouter);
-app.use('/', webRouter);
+// app.use('/api', userRouter);
+// app.use('/', webRouter);
 app.use('/quistions', quistionsRoute);
 
+app.post("/audio", (req, res) => {
+    data = req.body;
+    upload(req, res, (err) => {
+        if (err) {
+            res.status(400).send("Something went wrong!");
+        }
+        res.send(data);
+    });
+});
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "internal server error";

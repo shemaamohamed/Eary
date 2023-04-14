@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const db = require('../config/dbconnection');
+const db = require('../DataBase/dbconnection');
 const randomstring = require('randomstring');
 const sendMail = require('../Helpers/sendMail');
 const jwt = require('jsonwebtoken');

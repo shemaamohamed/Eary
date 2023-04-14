@@ -25,7 +25,7 @@ const uplode = multer({
 
 const { signupvalidation, loginvalidation, forgetvalidation } = require('../Helpers/validation');
 
-const userController = require('../Controller/userController');
+const userController = require('../Controllers/userController');
 
 const { isAuthorize } = require('../middleware/auth');
 
