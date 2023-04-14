@@ -26,8 +26,12 @@ user_id (requird),
 exam_id (requird),
 quistion_id (requird),
 Id (composite primary key[user_id , exam_id , quistion_id]),
+<<<<<<< HEAD
 Answer (requird),
 IsRight (defualt false)
+=======
+Answer (requird)
+>>>>>>> 39ef74dcf60ab9ee0b45edaf1e99560691a0d32d
 ]
 
 exam table[
