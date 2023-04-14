@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2023 at 06:25 AM
+-- Generation Time: Apr 14, 2023 at 10:01 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -24,21 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `exam`
+--
+
+CREATE TABLE `exam` (
+  `id` varchar(50) NOT NULL,
+  `Name` varchar(200) NOT NULL,
+  `Discription` varchar(500) DEFAULT NULL,
+  `number_of_questions` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `history`
 --
 
 CREATE TABLE `history` (
-  `quistion_id` varchar(50) NOT NULL,
   `user_id` varchar(50) NOT NULL,
-  `answer` varchar(200) NOT NULL
+  `exam_id` varchar(50) NOT NULL,
+  `quistion_id` varchar(50) NOT NULL,
+  `Answer` varchar(200) NOT NULL,
+  `IsRight` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `history`
 --
 
-INSERT INTO `history` (`quistion_id`, `user_id`, `answer`) VALUES
-('1', '1', 'A');
+INSERT INTO `history` (`user_id`, `exam_id`, `quistion_id`, `Answer`, `IsRight`) VALUES
+('1', '', '1', 'A', 0);
 
 -- --------------------------------------------------------
 
@@ -79,10 +94,17 @@ CREATE TABLE `users` (
 --
 
 --
+-- Indexes for table `exam`
+--
+ALTER TABLE `exam`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Name` (`Name`);
+
+--
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`quistion_id`,`user_id`);
+  ADD PRIMARY KEY (`user_id`,`exam_id`,`quistion_id`);
 
 --
 -- Indexes for table `questions`
@@ -97,7 +119,8 @@ ALTER TABLE `questions`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `Email` (`Email`),
-  ADD UNIQUE KEY `UserName` (`UserName`);
+  ADD UNIQUE KEY `UserName` (`UserName`),
+  ADD UNIQUE KEY `Phone` (`Phone`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

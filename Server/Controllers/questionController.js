@@ -3,15 +3,29 @@ const fs = require("fs");
 
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: (req, file, cb) => {
         cb(null, './Audios');
     },
-    filename: function (req, file, cb) {
+    filename: (req, file, cb) => {
         cb(null, `${req.body.id} ${file.originalname}`);
     }
 });
 
-const upload = multer({ storage: storage }).single("audio");
+const sizeMB = 20;
+
+const filesize = sizeMB * 1024 * 1024;
+
+const upload = multer({
+    storage: storage, limits: { fileSize: filesize }, fileFilter: (req, file, cb) => {
+        if (file.mimetype == "audio/mpeg") {
+            cb(null, true);
+        }
+        else {
+            cb(null, false);
+            return cb(new Error('Only mp3 files are allowed'));
+        }
+    }
+}).single("audio");
 
 const quistions = [];
 
@@ -31,7 +45,7 @@ exports.post_quistions = (req, res) => {
         const file = req.file;
         const qstn = quistions.find(q => q.id === data.id);
         if (err) {
-            res.status(400).send("Something went wrong!");
+            res.status(400).send(err.message);
         }
         else if (qstn) {
             res.status(403).send("already excite");
@@ -57,7 +71,7 @@ exports.put_quistions = (req, res) => {
         const file = req.file;
         const qstn = quistions.find(q => q.id === data.id);
         if (err) {
-            res.status(400).send("Something went wrong!");
+            res.status(400).send(err.message);
         }
         else if (!qstn) {
             res.sendStatus(404);
