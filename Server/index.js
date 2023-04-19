@@ -1,22 +1,10 @@
-const express = require("express");
+const { express, fs, cors, multer } = require('./Global_imports/Global');
+
 const app = express();
-const fs = require("fs");
-const cors = require('cors');
-const env = require("dotenv").config;
-// require('./DataBase/dbconnection');
 
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './Audios');
-    },
-    filename: function (req, file, cb) {
-        cb(null, `1 ${file.originalname}`);
-    }
-});
-const upload = multer({ storage: storage }).single("audio");
 
-const quistionsRoute = require('./Routes/quistionRoute.js');
+const quistionsRoute = require('./Routes/quistionRoute');
+const examsRoute = require('./Routes/examRoute');
 // const userRouter = require('./Routes/userRoute.js');
 // const webRouter = require('./Routes/webRoute.js');
 
@@ -30,16 +18,10 @@ app.use(cors());
 // app.use('/api', userRouter);
 // app.use('/', webRouter);
 app.use('/quistions', quistionsRoute);
+app.use('/exams', examsRoute);
 
-app.post("/audio", (req, res) => {
-    data = req.body;
-    upload(req, res, (err) => {
-        if (err) {
-            res.status(400).send("Something went wrong!");
-        }
-        res.send(data);
-    });
-});
+
+
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "internal server error";
@@ -49,8 +31,8 @@ app.use((err, req, res, next) => {
 });
 
 
-const PORT = process.env.PORT || "4000";
-const HOST = process.env.HOST || "localhost";
+const PORT = "4000";
+const HOST = "localhost";
 
 
 

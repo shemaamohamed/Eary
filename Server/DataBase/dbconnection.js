@@ -11,20 +11,7 @@ connection.connect((err) => {
         console.error('error connecting: ' + err.stack);
         return;
     }
-
-
     console.log('connected as id ' + connection.threadId);
-    let sql = "SELECT * FROM history";
-    connection.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("selecting");
-        console.log(result);
-        connection.end();
-    });
 });
-
-
-
-
 
 module.exports = connection;

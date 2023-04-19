@@ -1,12 +1,12 @@
 question table [
 Id (auto incremented),
+Name (requird , unique),
 Audio (requird),
 RightAnswer (requird),
 Wrong1 (requird),
 Wrong2 (requird),
 Wrong3 (requird),
-Discription (optional),
-exam_id (foreign key)
+Discription (optional)
 ]
 
 user table [
@@ -18,7 +18,7 @@ Password (requird),
 UserRole (requird),
 IsActivated (defualt false),
 IsAccepted (defualt false),
-Score
+MaxScore
 ]
 
 histoy table[
@@ -26,19 +26,27 @@ user_id (requird),
 exam_id (requird),
 quistion_id (requird),
 Id (composite primary key[user_id , exam_id , quistion_id]),
-<<<<<<< HEAD
 Answer (requird),
 IsRight (defualt false)
-=======
-Answer (requird)
->>>>>>> 39ef74dcf60ab9ee0b45edaf1e99560691a0d32d
 ]
 
 exam table[
 Id (auto incremented),
 Name (requird , unique),
-Discription (optional),
-number_of_questions
+number_of_questions,
+Discription (optional)
+]
+
+exam_question table[
+exam_id (foreign key),
+quistion_id (foreign key),
+Id (composite primary key[exam_id , quistion_id])
+]
+
+password_resets[
+Email (requird , unique),
+token ,
+created_at
 ]
 
 

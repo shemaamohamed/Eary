@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2023 at 10:01 AM
+-- Generation Time: Apr 19, 2023 at 02:48 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -30,8 +30,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `exam` (
   `id` varchar(50) NOT NULL,
   `Name` varchar(200) NOT NULL,
-  `Discription` varchar(500) DEFAULT NULL,
-  `number_of_questions` int(11) DEFAULT NULL
+  `number_of_questions` int(11) DEFAULT NULL,
+  `Discription` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exam_question`
+--
+
+CREATE TABLE `exam_question` (
+  `exam_id` varchar(50) NOT NULL,
+  `quistion_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -48,12 +59,17 @@ CREATE TABLE `history` (
   `IsRight` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `history`
+-- Table structure for table `password_resets`
 --
 
-INSERT INTO `history` (`user_id`, `exam_id`, `quistion_id`, `Answer`, `IsRight`) VALUES
-('1', '', '1', 'A', 0);
+CREATE TABLE `password_resets` (
+  `user_email` varchar(50) NOT NULL,
+  `token` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -63,6 +79,7 @@ INSERT INTO `history` (`user_id`, `exam_id`, `quistion_id`, `Answer`, `IsRight`)
 
 CREATE TABLE `questions` (
   `id` varchar(50) NOT NULL,
+  `Name` varchar(200) NOT NULL,
   `Audio` varchar(500) NOT NULL,
   `RightAnswer` varchar(200) NOT NULL,
   `Wrong1` varchar(200) NOT NULL,
@@ -80,13 +97,18 @@ CREATE TABLE `questions` (
 CREATE TABLE `users` (
   `id` varchar(50) NOT NULL,
   `UserName` varchar(30) NOT NULL,
+  `image` varchar(500) DEFAULT NULL,
   `Email` varchar(50) NOT NULL,
   `Phone` varchar(11) DEFAULT NULL,
   `Password` varchar(50) NOT NULL,
   `UserRole` varchar(20) NOT NULL,
   `IsActivated` tinyint(1) NOT NULL DEFAULT 0,
   `IsAccepted` tinyint(1) NOT NULL DEFAULT 0,
-  `Score` int(11) DEFAULT NULL
+  `token` timestamp NULL DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `MaxScore` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -101,6 +123,12 @@ ALTER TABLE `exam`
   ADD UNIQUE KEY `Name` (`Name`);
 
 --
+-- Indexes for table `exam_question`
+--
+ALTER TABLE `exam_question`
+  ADD PRIMARY KEY (`exam_id`,`quistion_id`);
+
+--
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
@@ -111,7 +139,8 @@ ALTER TABLE `history`
 --
 ALTER TABLE `questions`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `Audio` (`Audio`);
+  ADD UNIQUE KEY `Audio` (`Audio`),
+  ADD UNIQUE KEY `Name` (`Name`);
 
 --
 -- Indexes for table `users`
