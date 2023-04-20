@@ -1,32 +1,8 @@
-const { query } = require('express');
-const { fs, quistions, multer, connection, randomstring } = require('../Global_imports/Global');
+const { util, fs, randomstring, query, global_get, global_insert, global_delete } = require('../Global_imports/Global');
 
+const { upload, unlinkfile, } = require('../Global_imports/file_upload');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './Audios');
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${req.body.Name} ${randomstring.generate()}.mp3`);
-    }
-});
-
-const sizeMB = 20;
-
-const filesize = sizeMB * 1024 * 1024;
-
-const upload = multer({
-    storage: storage, limits: { fileSize: filesize }, fileFilter: (req, file, cb) => {
-        if (file.mimetype == "audio/mpeg") {
-            cb(null, true);
-        }
-        else {
-            cb(null, false);
-            return cb(new Error('Only mp3 files are allowed'));
-        }
-    }
-}).single("audio");
-
+const { question_model, question_get, datasql } = require('../Models/questionModel');
 
 /*question table [
 Id (auto incremented),
@@ -39,222 +15,136 @@ Wrong3 (requird),
 Discription (optional)
 ]*/
 
-get_quistions = (req, res) => {
+get_quistions = async (req, res) => {
     const data = req.body;
-    // if (!quistions[0]) {
-    //     res.sendStatus(204);
-    // }
-    // else if (data.Name) {
-    //     const qstnByName = quistions.find(q => q.Name === data.Name);
-    //     if (!qstnById && !qstnByName[0])
-    //         res.sendStatus(404);
-    //     else {
-    //         res.send(qstnByName);
-    //     }
-    // }
-    // else {
-    //     res.send(quistions);
-    // }
-    let query;
-    if (data.Name) {
-        query = `SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name LIKE '%${data.Name}%'`;
+    try {
+        const results = await question_get(data.Name);
+        res.send(results[0] ? results : 204);
+    } catch (err) {
+        res.status(500).json({ err: err });
     }
-    else {
-        query = `SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions`;
-    }
-    connection.query(query, (error, results, fields) => {
-        if (error) throw error;
-        if (!results[0]) {
-            res.sendStatus(404);
-        }
-        else {
-            res.send(results);
-        }
-
-    });
-
 };
 
 post_quistions = (req, res) => {
 
-    upload(req, res, (err) => {
+    upload(req, res, async (err) => {
         const file = req.file;
-        const filepathsql = file.path.slice(0, 6) + "\\" + file.path.slice(6);
-        const data = { "id": randomstring.generate(), "Audio": file.path, ...req.body };
-        //const qstnByName = quistions.find(q => q.Name === data.Name);
-        // if (qstnByName) {
-        //     res.status(403).send("already excite");
-        // }
-        // else {
-        //     quistions.push(data);
-        //     res.send(`element added`);
-        // }
-        const query = `INSERT INTO questions(id, Name, Audio, RightAnswer, Wrong1, Wrong2, Wrong3, Discription) 
-        VALUES ('${data.id}','${data.Name || ""}','${filepathsql || ""}','${data.RightAnswer || ""}','${data.Wrong1 || ""}','${data.Wrong2 || ""}','${data.Wrong3 || ""}','${data.Discription || ""}')`;
-        connection.query(query, (error, results, fields) => {
-            if (error) {
-                fs.unlink(file.path, (err) => {
-                    if (err) {
-                        console.error(err);
-                        return;
+        const data = question_model(req, randomstring.generate(), file);
+        const valid = data.Name && file && data.RightAnswer && data.Wrong1 && data.Wrong1 && data.Wrong2 && data.Wrong3;
+
+        if (valid) {
+            try {
+                const checkexist = await question_get(data.Name);
+                if (checkexist[0]) {
+                    unlinkfile(file, err);
+                    res.status(403).send("already excite");
+                }
+                else {
+                    const insertion = global_insert("questions", data);
+
+                    if (insertion) {
+                        res.status(200).send("element added");
                     }
-                });
-                res.status(400).send(error.sqlMessage);
+                    else {
+                        res.status(400).send("the operation couldn not be completed");
+                    }
+                }
+            } catch (err) {
+                unlinkfile(file, err);
+                console.log(err);
+                res.status(500).json({ err: err });
             }
-            res.send(`element added`);
-        });
+        }
+        else {
+            res.status(400).send("requird fields was not sent");
+        }
+
+
     });
 };
 
 put_quistions = (req, res) => {
 
-    upload(req, res, (err) => {
-        const data = req.body;
+    upload(req, res, async (err) => {
         const file = req.file;
+        const data = question_model(req, "", file);
+        data.Newname = req.body.Newname;
         let filepathsql;
         if (file) { filepathsql = file.path.slice(0, 6) + "\\" + file.path.slice(6); }
-
         if (!data.Name) {
-            if (file) {
-                fs.unlink(file.path, (err) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                });
-            }
-
+            unlinkfile(file, err);
             res.sendStatus(404);
         }
         else {
-            currentname = "'" + data.Name + "'" + ")";
-            defaults = {
-                "Name": "(SELECT Name FROM questions WHERE Name=" + currentname,
-                "Audio": "(SELECT Audio FROM questions WHERE Name=" + currentname,
-                "RightAnswer": "(SELECT RightAnswer FROM questions WHERE Name=" + currentname,
-                "Wrong1": "(SELECT Wrong1 FROM questions WHERE Name=" + currentname,
-                "Wrong2": "(SELECT Wrong2 FROM questions WHERE Name=" + currentname,
-                "Wrong3": "(SELECT Wrong3 FROM questions WHERE Name=" + currentname,
-                "Discription": "(SELECT Discription FROM questions WHERE Name=" + currentname
-            };
+            try {
+                const checkexist = await question_get(data.Name);
+                if (!checkexist[0]) {
+                    unlinkfile(file, err);
+                    res.sendStatus(404);
+                }
+                else {
+                    const data_sql = datasql(data, file, filepathsql);
 
-            datasql = {
-                "Name": data.Newname ? "'" + data.Newname + "'" : defaults.Name,
-                "Audio": file ? "'" + filepathsql + "'" : defaults.Audio,
-                "RightAnswer": data.RightAnswer ? "'" + data.RightAnswer + "'" : defaults.RightAnswer,
-                "Wrong1": data.Wrong1 ? "'" + data.Wrong1 + "'" : defaults.Wrong1,
-                "Wrong2": data.Wrong2 ? "'" + data.Wrong2 + "'" : defaults.Wrong2,
-                "Wrong3": data.Wrong3 ? "'" + data.Wrong3 + "'" : defaults.Wrong3,
-                "Discription": data.Discription ? "'" + data.Discription + "'" : defaults.Discription
-            };
+                    const update_q = `UPDATE questions
+            SET Name = ${data_sql.Name},Audio=${data_sql.Audio}, RightAnswer = ${data_sql.RightAnswer},Wrong1=${data_sql.Wrong1},Wrong2=${data_sql.Wrong2},Wrong3=${data_sql.Wrong3},Discription=${data_sql.Discription}
+            WHERE Name='${data.Name}'`;
+                    try {
+                        const results = await question_get(data.Name);
+                        try {
+                            if (file) {
+                                fs.unlink(results[0].Audio, async (err) => {
+                                    if (err) {
+                                        console.error(err);
+                                        return;
+                                    }
+                                    const update = await query(update_q);
+                                });
+                            }
 
-            const query = `UPDATE questions
-        SET Name = ${datasql.Name},Audio=${datasql.Audio}, RightAnswer = ${datasql.RightAnswer},Wrong1=${datasql.Wrong1},Wrong2=${datasql.Wrong2},Wrong3=${datasql.Wrong3},Discription=${datasql.Discription}
-        WHERE Name='${data.Name}'`;
-            if (file) {
-                connection.query(defaults.Audio, (error, results, fields) => {
-                    if (error) {
-                        fs.unlink(file.path, (err) => {
-                            if (err) {
-                                console.error(err);
-                                return;
-                            }
-                        });
-                        res.status(400).send(error.sqlMessage + "\n" + defaults.Audio);
+                        } catch (error) {
+                            unlinkfile(file, err);
+                            res.status(500).json({ err: err });
+                        }
+                    } catch (error) {
+                        unlinkfile(file, err);
+                        res.status(500).json({ err: err });
                     }
-                    else if (!results[0]) {
-                        fs.unlink(file.path, (err) => {
-                            if (err) {
-                                console.error(err);
-                                return;
-                            }
-                        });
-                        res.sendStatus(404);
-                    }
-                    else {
-                        fs.unlink(results[0].Audio, (err) => {
-                            if (err) {
-                                console.error(err);
-                                return;
-                            }
-                            connection.query(query, (error, results, fields) => {
-                                if (error) {
-                                    fs.unlink(file.path, (err) => {
-                                        if (err) {
-                                            console.error(err);
-                                            return;
-                                        }
-                                    });
-                                    res.status(400).send(error.sqlMessage + "\n" + query);
-                                }
-                                res.send("element updated");
-                            });
-                        });
-                    }
-
-                });
+                }
+                res.send("element updated");
+            } catch (error) {
+                unlinkfile(file, err);
+                res.status(500).json({ err: err });
             }
-            else {
-                connection.query(defaults.Name, (error, results, fields) => {
-                    if (error) {
-                        res.status(400).send(error.sqlMessage + "\n" + defaults.Name);
-                    }
-                    else if (!results[0]) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        connection.query(query, (error, results, fields) => {
-                            if (error) {
-                                res.status(400).send(error.sqlMessage + "\n" + query);
-                            }
-                            res.send("element updated");
-                        });
-                    }
-                });
-            }
-
-
-
         }
-
     });
 
 };
 
-delete_quistions = (req, res) => {
+delete_quistions = async (req, res) => {
     const data = req.body;
-    currentname = "'" + data.Name + "'" + ")";
-    const query = `DELETE FROM questions WHERE Name='${data.Name}'`;
-    const audioquery = "(SELECT Audio FROM questions WHERE Name=" + currentname;
     if (!data.Name) {
         res.sendStatus(404);
     }
-    else {
-        connection.query(audioquery, (error, results, fields) => {
-            if (error) {
-                res.status(400).send(error.sqlMessage + "\n" + audioquery);
-            }
-            else if (!results[0]) {
-                res.sendStatus(404);
-            }
-            else {
-                fs.unlink(results[0].Audio, (err) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                });
-                connection.query(query, (error, results, fields) => {
-                    if (error) {
-                        res.status(400).send(error.sqlMessage + "\n" + query);
-                    }
-                    res.send("element deleted");
-                });
-            }
+    try {
+        const audioquery = await query("SELECT Audio FROM questions WHERE Name=?", data.Name);
+        if (!audioquery[0]) {
+            res.sendStatus(404);
+        }
+        else {
+            fs.unlink(audioquery[0].Audio, (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+            });
+            const del = await global_delete("questions", "Name", data.Name);
 
-        });
+            del ? res.send("element deleted") : res.sendStatus(400).send("could not delete");
+        }
+
+    } catch (err) {
+        res.status(500).json({ err: err });
     }
-
 };
 
 module.exports = { get_quistions, post_quistions, put_quistions, delete_quistions };

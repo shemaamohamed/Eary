@@ -1,6 +1,4 @@
-const { router } = require("../Global_imports/Global");
-
-const router_template = (get_req, post_req, put_req, delete_req) => {
+const router_template = (router, get_req, post_req, put_req, delete_req) => {
     router.get('/', get_req);
 
     router.post('/', post_req);
@@ -10,4 +8,4 @@ const router_template = (get_req, post_req, put_req, delete_req) => {
     router.delete('/', delete_req);
 };
 
-module.exports = { router, router_template };
+module.exports = { router_template };
