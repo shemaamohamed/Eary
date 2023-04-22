@@ -9,30 +9,32 @@ const exam_model = (request, randomstring) => {
         "questions": request.body.questions
     };
 };
-
-const defaults = (Name) => {
-    currentname = "'" + Name + "'" + ")";
+const datasql = (data, exam) => {
     return {
-        "Name": "(SELECT Name FROM exam WHERE Name=" + currentname,
-        "Number_of_questions": "(SELECT Number_of_questions FROM exam WHERE Name=" + currentname,
-        "Discription": "(SELECT Discription FROM exam WHERE Name=" + currentname
-    };
-};
-
-const datasql = (data) => {
-    return {
-        "Name": data.Newname ? "'" + data.Newname + "'" : defaults(data.Name).Name,
-        "Number_of_questions": data.Number_of_questions ? "'" + data.Number_of_questions + "'" : defaults(data.Name).Number_of_questions,
-        "Discription": data.Discription ? "'" + data.Discription + "'" : defaults(data.Name).Discription
+        "Name": data.Newname || data.Name,
+        "number_of_questions": exam[0].number_of_questions,
+        "Discription": data.Discription || exam[0].Discription
     };
 };
 
 const exam_get = async (value) => {
-    return await query(`SELECT Name, number_of_questions, Discription FROM exam WHERE Name LIKE '%${value || ""}%'`);
+    try {
+        return await query(`SELECT Name, number_of_questions, Discription FROM exam WHERE Name LIKE '%${value || ""}%'`);
+    } catch (err) {
+        // console.log("exam_get \n");
+        // console.log(err);
+        return false;
+    }
 };
 
 const exam_question = async (Id) => {
-    return await query(`SELECT * FROM exam_question WHERE exam_id= '${Id || ""}'OR question_id='${Id || ""}'`);
+    try {
+        return await query(`SELECT * FROM exam_question WHERE exam_id= '${Id || ""}'OR question_id='${Id || ""}'`);
+    } catch (err) {
+        // console.log("exam_question \n");
+        // console.log(err);
+        return false;
+    }
 };
 
-module.exports = { exam_model, exam_get, exam_question, defaults, datasql };
+module.exports = { exam_model, exam_get, exam_question, datasql };
