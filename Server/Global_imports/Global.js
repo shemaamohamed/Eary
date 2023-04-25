@@ -24,8 +24,8 @@ const global_insert = async (table, data) => {
         return insertion.affectedRows > 0;
     }
     catch (err) {
-        console.log("global_insert \n");
-        console.log(err);
+        // console.log("global_insert \n");
+        // console.log(err);
         return false;
     }
 };
@@ -36,8 +36,8 @@ const global_update = async (table, data, unique, value) => {
         return update.affectedRows > 0;
     }
     catch (err) {
-        console.log("global_update \n");
-        console.log(err);
+        // console.log("global_update \n");
+        // console.log(err);
         return false;
     }
 };

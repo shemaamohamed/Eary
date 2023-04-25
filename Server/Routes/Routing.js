@@ -7,5 +7,4 @@ const router_template = (router, get_req, post_req, put_req, delete_req) => {
 
     router.delete('/', delete_req);
 };
-
 module.exports = { router_template };

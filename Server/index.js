@@ -5,8 +5,8 @@ const app = express();
 
 const quistionsRoute = require('./Routes/quistionRoute');
 const examsRoute = require('./Routes/examRoute');
-// const userRouter = require('./Routes/userRoute.js');
-// const webRouter = require('./Routes/webRoute.js');
+const userRouter = require('./Routes/userRoute.js');
+const webRouter = require('./Routes/webRoute.js');
 
 
 app.use(express.json());
@@ -15,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
-// app.use('/api', userRouter);
-// app.use('/', webRouter);
+app.use('/api', userRouter);
+app.use('/', webRouter);
 app.use('/quistions', quistionsRoute);
 app.use('/exams', examsRoute);
 

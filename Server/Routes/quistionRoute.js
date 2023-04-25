@@ -5,5 +5,4 @@ const { get_quistions, post_quistions, put_quistions, delete_quistions } = requi
 
 router_template(router, get_quistions, post_quistions, put_quistions, delete_quistions);
 
-
 module.exports = router;

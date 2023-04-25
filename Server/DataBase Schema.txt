@@ -1,3 +1,26 @@
+user table [
+Id (auto incremented),
+UserName (requird , unique),
+Email (requird , unique),
+Phone (optional , unique),
+Password (requird),
+UserRole (defualt 0),
+IsActivated (defualt false),
+IsAccepted (defualt false),
+token,
+last_login,
+created_at (defualt current_timestamp() ),
+updated_at (defualt current_timestamp() ),
+MaxScore
+]
+
+exam table[
+Id (auto incremented),
+Name (requird , unique),
+number_of_questions,
+Discription (optional)
+]
+
 question table [
 Id (auto incremented),
 Name (requird , unique),
@@ -9,16 +32,10 @@ Wrong3 (requird),
 Discription (optional)
 ]
 
-user table [
-Id (auto incremented),
-UserName (requird , unique),
-Email (requird , unique),
-Phone (optional , unique),
-Password (requird),
-UserRole (requird),
-IsActivated (defualt false),
-IsAccepted (defualt false),
-MaxScore
+exam_question table[
+exam_id (foreign key),
+quistion_id (foreign key),
+Id (composite primary key[exam_id , quistion_id])
 ]
 
 histoy table[
@@ -28,19 +45,6 @@ quistion_id (requird),
 Id (composite primary key[user_id , exam_id , quistion_id]),
 Answer (requird),
 IsRight (defualt false)
-]
-
-exam table[
-Id (auto incremented),
-Name (requird , unique),
-number_of_questions,
-Discription (optional)
-]
-
-exam_question table[
-exam_id (foreign key),
-quistion_id (foreign key),
-Id (composite primary key[exam_id , quistion_id])
 ]
 
 password_resets[

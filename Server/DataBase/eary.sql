@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2023 at 02:48 PM
+-- Generation Time: Apr 25, 2023 at 11:44 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `exam` (
   `id` varchar(50) NOT NULL,
   `Name` varchar(200) NOT NULL,
-  `number_of_questions` int(11) DEFAULT NULL,
-  `Discription` varchar(500) DEFAULT NULL
+  `number_of_questions` int(11) DEFAULT 0,
+  `Discription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `exam` (
 
 CREATE TABLE `exam_question` (
   `exam_id` varchar(50) NOT NULL,
-  `quistion_id` varchar(50) NOT NULL
+  `question_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -85,7 +85,7 @@ CREATE TABLE `questions` (
   `Wrong1` varchar(200) NOT NULL,
   `Wrong2` varchar(200) NOT NULL,
   `Wrong3` varchar(200) NOT NULL,
-  `Discription` varchar(500) DEFAULT NULL
+  `Discription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -101,7 +101,7 @@ CREATE TABLE `users` (
   `Email` varchar(50) NOT NULL,
   `Phone` varchar(11) DEFAULT NULL,
   `Password` varchar(50) NOT NULL,
-  `UserRole` varchar(20) NOT NULL,
+  `UserRole` tinyint(1) NOT NULL DEFAULT 0,
   `IsActivated` tinyint(1) NOT NULL DEFAULT 0,
   `IsAccepted` tinyint(1) NOT NULL DEFAULT 0,
   `token` timestamp NULL DEFAULT NULL,
@@ -126,13 +126,16 @@ ALTER TABLE `exam`
 -- Indexes for table `exam_question`
 --
 ALTER TABLE `exam_question`
-  ADD PRIMARY KEY (`exam_id`,`quistion_id`);
+  ADD PRIMARY KEY (`exam_id`,`question_id`),
+  ADD KEY `question_id_constr` (`question_id`);
 
 --
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`user_id`,`exam_id`,`quistion_id`);
+  ADD PRIMARY KEY (`user_id`,`exam_id`,`quistion_id`),
+  ADD KEY `history_exam_id_constr` (`exam_id`),
+  ADD KEY `history_question_id_constr` (`quistion_id`);
 
 --
 -- Indexes for table `questions`
@@ -150,6 +153,25 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `Email` (`Email`),
   ADD UNIQUE KEY `UserName` (`UserName`),
   ADD UNIQUE KEY `Phone` (`Phone`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `exam_question`
+--
+ALTER TABLE `exam_question`
+  ADD CONSTRAINT `exam_id_constr` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `question_id_constr` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `history`
+--
+ALTER TABLE `history`
+  ADD CONSTRAINT `history_exam_id_constr` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `history_question_id_constr` FOREIGN KEY (`quistion_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `history_user_id_constr` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

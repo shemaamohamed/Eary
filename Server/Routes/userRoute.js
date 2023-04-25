@@ -4,6 +4,12 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 
+const { signupvalidation, loginvalidation, forgetvalidation } = require('../Helpers/validation');
+
+const userController = require('../Controllers/userController');
+
+const { isAuthorize } = require('../middleware/auth');
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../public/images'));
@@ -23,13 +29,8 @@ const uplode = multer({
     fileFilter: filefilter
 });
 
-const { signupvalidation, loginvalidation, forgetvalidation } = require('../Helpers/validation');
 
-const userController = require('../Controllers/userController');
-
-const { isAuthorize } = require('../middleware/auth');
-
-//resister rout
+//resister route
 router.post('/register', uplode.single('image'), signupvalidation, userController.register);
 router.post('/login', loginvalidation, userController.login);
 router.get('/get-user', isAuthorize, userController.getUser);

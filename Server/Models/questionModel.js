@@ -14,31 +14,24 @@ const question_model = (request, randomstring, file) => {
 };
 
 const question_get = async (value) => {
-    return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name LIKE '%${value || ""}%'`);
+    try {
+        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name LIKE '%${value || ""}%'`);
+    } catch (err) {
+        return false;
+    }
 };
 
-const defaults = (Name) => {
-    currentname = "'" + Name + "'" + ")";
-    return {
-        "Name": "(SELECT Name FROM questions WHERE Name=" + currentname,
-        "Audio": "(SELECT Audio FROM questions WHERE Name=" + currentname,
-        "RightAnswer": "(SELECT RightAnswer FROM questions WHERE Name=" + currentname,
-        "Wrong1": "(SELECT Wrong1 FROM questions WHERE Name=" + currentname,
-        "Wrong2": "(SELECT Wrong2 FROM questions WHERE Name=" + currentname,
-        "Wrong3": "(SELECT Wrong3 FROM questions WHERE Name=" + currentname,
-        "Discription": "(SELECT Discription FROM questions WHERE Name=" + currentname
-    };
-};
 
-const datasql = (data, file, pathsql) => {
+
+const datasql = (data, question) => {
     return {
-        "Name": data.Newname ? "'" + data.Newname + "'" : defaults(data.Name).Name,
-        "Audio": file ? "'" + pathsql + "'" : defaults(data.Name).Audio,
-        "RightAnswer": data.RightAnswer ? "'" + data.RightAnswer + "'" : defaults(data.Name).RightAnswer,
-        "Wrong1": data.Wrong1 ? "'" + data.Wrong1 + "'" : defaults(data.Name).Wrong1,
-        "Wrong2": data.Wrong2 ? "'" + data.Wrong2 + "'" : defaults(data.Name).Wrong2,
-        "Wrong3": data.Wrong3 ? "'" + data.Wrong3 + "'" : defaults(data.Name).Wrong3,
-        "Discription": data.Discription ? "'" + data.Discription + "'" : defaults(data.Name).Discription
+        "Name": data.NewName || data.Name,
+        "Audio": data.Audio || question[0].Audio,
+        "RightAnswer": data.RightAnswer || question[0].RightAnswer,
+        "Wrong1": data.Wrong1 || question[0].Wrong1,
+        "Wrong2": data.Wrong2 || question[0].Wrong2,
+        "Wrong3": data.Wrong3 || question[0].Wrong3,
+        "Discription": data.Discription || question[0].Discription
     };
 };
-module.exports = { question_model, question_get, defaults, datasql };
+module.exports = { question_model, question_get, datasql };

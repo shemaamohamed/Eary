@@ -11,7 +11,7 @@ const exam_model = (request, randomstring) => {
 };
 const datasql = (data, exam) => {
     return {
-        "Name": data.Newname || data.Name,
+        "Name": data.NewName || data.Name,
         "number_of_questions": exam[0].number_of_questions,
         "Discription": data.Discription || exam[0].Discription
     };
