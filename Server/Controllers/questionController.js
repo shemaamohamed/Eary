@@ -1,6 +1,6 @@
 const { fs, randomstring, global_get, global_insert, global_delete, global_update } = require('../Global_imports/Global');
 
-const { upload, unlinkfile, sizeMB, Maxfilesize } = require('../Global_imports/file_upload');
+const { upload, unlinkfile, sizeMB } = require('../Global_imports/file_upload');
 
 const { question_model, question_get, datasql } = require('../Models/questionModel');
 
@@ -35,31 +35,41 @@ get_quistions = async (req, res) => {
 
 post_quistions = (req, res) => {
     upload(req, res, async (err) => {
-        const file = req.file;
-        const data = question_model(req, randomstring.generate(), file);
-        const valid = data.Name && file && data.RightAnswer && data.Wrong1 && data.Wrong2 && data.Wrong3;
-        if (valid) {
-            const checkexist = await question_get(data.Name);
-            if (checkexist[0]) {
-                unlinkfile(file);
-                status = 403;
-                message = "already excite";
+        if (err) {
+            if (err.message == "File too large") {
+                message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
             }
             else {
-                const insertion = await global_insert("questions", data);
-                if (insertion) {
-                    status = 200;
-                    message = "element added";
-                }
-                else {
-                    unlinkfile(file);
-                    message = "could not add question";
-                }
+                message = err.message;
             }
         }
         else {
-            unlinkfile(file);
-            message = "requird fields was not sent";
+            const file = req.file;
+            const data = question_model(req, randomstring.generate(), file);
+            const valid = data.Name && file && data.RightAnswer && data.Wrong1 && data.Wrong2 && data.Wrong3;
+            if (valid) {
+                const checkexist = await question_get(data.Name);
+                if (checkexist[0]) {
+                    unlinkfile(file);
+                    status = 403;
+                    message = "already excite";
+                }
+                else {
+                    const insertion = await global_insert("questions", data);
+                    if (insertion) {
+                        status = 200;
+                        message = "element added";
+                    }
+                    else {
+                        unlinkfile(file);
+                        message = "could not add question";
+                    }
+                }
+            }
+            else {
+                unlinkfile(file);
+                message = "requird fields was not sent";
+            }
         }
         res.status(status).send(message);
     });
@@ -67,45 +77,55 @@ post_quistions = (req, res) => {
 
 put_quistions = (req, res) => {
     upload(req, res, async (err) => {
-        const file = req.file;
-        const data = req.body;
-        if (file) { data.Audio = file.path; }
-        const question = await global_get("questions", "Name", data.Name);
-        if (!data.Name) {
-            unlinkfile(file);
-            status = 404;
-            message = "Not Found";
-        }
-        else if (!question[0]) {
-            unlinkfile(file);
-            status = 404;
-            message = "Not Found";
-        }
-        else {
-            const old_audio = question[0].Audio;
-            const data_sql = datasql(data, question);
-            const update_question = await global_update("questions", data_sql, "Name", data.Name);
-            if (update_question) {
-                status = 200;
-                message = "element updated";
-                try {
-                    if (file) {
-                        fs.unlink(old_audio, async (err) => {
-                            if (err) {
-                                console.error(err);
-                                return;
-                            }
-                        });
-                    }
-                } catch (error) {
-                    unlinkfile(file);
-                    console.log(err);
-                    status = 500;
-                    message = err;
-                }
+        if (err) {
+            if (err.message == "File too large") {
+                message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
             }
             else {
-                message = "could not update question";
+                message = err.message;
+            }
+        }
+        else {
+            const file = req.file;
+            const data = req.body;
+            if (file) { data.Audio = file.path; }
+            const question = await global_get("questions", "Name", data.Name);
+            if (!data.Name) {
+                unlinkfile(file);
+                status = 404;
+                message = "Not Found";
+            }
+            else if (!question[0]) {
+                unlinkfile(file);
+                status = 404;
+                message = "Not Found";
+            }
+            else {
+                const old_audio = question[0].Audio;
+                const data_sql = datasql(data, question);
+                const update_question = await global_update("questions", data_sql, "Name", data.Name);
+                if (update_question) {
+                    status = 200;
+                    message = "element updated";
+                    try {
+                        if (file) {
+                            fs.unlink(old_audio, async (err) => {
+                                if (err) {
+                                    console.error(err);
+                                    return;
+                                }
+                            });
+                        }
+                    } catch (error) {
+                        unlinkfile(file);
+                        console.log(err);
+                        status = 500;
+                        message = err;
+                    }
+                }
+                else {
+                    message = "could not update question";
+                }
             }
         }
         res.status(status).send(message);

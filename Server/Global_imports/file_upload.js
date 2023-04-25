@@ -1,4 +1,4 @@
-const { fs, multer, randomstring, express } = require('./Global');
+const { fs, multer } = require('./Global');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,7 +20,7 @@ const upload = multer({
         }
         else {
             cb(null, false);
-            return cb("Only mp3 files are  allowed");
+            return cb(new Error("Only mp3 files are  allowed"));
         }
     }
 }).single("Audio");
