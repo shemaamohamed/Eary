@@ -15,7 +15,7 @@ Wrong3 (requird),
 Discription (optional)
 ]*/
 let status = 400, message = "the operation was not successful";
-get_quistions = async (req, res) => {
+const get_questions = async (req, res) => {
     const data = req.body;
     const questions = await question_get(data.Name);
     if (!data.Name && !questions[0]) {
@@ -33,7 +33,7 @@ get_quistions = async (req, res) => {
     res.status(status).send(message);
 };
 
-post_quistions = (req, res) => {
+const post_questions = (req, res) => {
     upload(req, res, async (err) => {
         if (err) {
             if (err.message == "File too large") {
@@ -52,7 +52,7 @@ post_quistions = (req, res) => {
                 if (checkexist[0]) {
                     unlinkfile(file);
                     status = 403;
-                    message = "already excite";
+                    message = "already existe";
                 }
                 else {
                     const insertion = await global_insert("questions", data);
@@ -75,7 +75,7 @@ post_quistions = (req, res) => {
     });
 };
 
-put_quistions = (req, res) => {
+const put_questions = (req, res) => {
     upload(req, res, async (err) => {
         if (err) {
             if (err.message == "File too large") {
@@ -132,7 +132,7 @@ put_quistions = (req, res) => {
     });
 };
 
-delete_quistions = async (req, res) => {
+const delete_questions = async (req, res) => {
     const data = req.body;
     if (!data.Name) {
         status = 404;
@@ -171,4 +171,4 @@ delete_quistions = async (req, res) => {
     res.status(status).send(message);
 };
 
-module.exports = { get_quistions, post_quistions, put_quistions, delete_quistions };
+module.exports = { get_questions, post_questions, put_questions, delete_questions };

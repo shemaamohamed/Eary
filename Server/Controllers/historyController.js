@@ -16,11 +16,4 @@ const delete_history = (req, res) => {
 
 };
 
-
-
-
-
-
-
-
 module.exports = { get_history, post_history, put_history, delete_history };

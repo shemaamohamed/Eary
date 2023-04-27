@@ -48,7 +48,7 @@ post_exams = async (req, res) => {
         message = "requird fields was not sent";
     }
     else if (checkexist[0]) {
-        status = 403; message = "already excite";
+        status = 403; message = "already existe";
     }
     else {
         const insertion_exam = await global_insert("exam", datafilterd);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2023 at 11:44 PM
+-- Generation Time: Apr 27, 2023 at 10:03 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -52,11 +52,12 @@ CREATE TABLE `exam_question` (
 --
 
 CREATE TABLE `history` (
-  `user_id` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `exam_id` varchar(50) NOT NULL,
   `quistion_id` varchar(50) NOT NULL,
   `Answer` varchar(200) NOT NULL,
-  `IsRight` tinyint(1) NOT NULL DEFAULT 0
+  `IsRight` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -67,7 +68,7 @@ CREATE TABLE `history` (
 
 CREATE TABLE `password_resets` (
   `user_email` varchar(50) NOT NULL,
-  `token` varchar(100) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -95,16 +96,14 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `users` (
-  `id` varchar(50) NOT NULL,
-  `UserName` varchar(30) NOT NULL,
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` text NOT NULL,
   `image` varchar(500) DEFAULT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Phone` varchar(11) DEFAULT NULL,
-  `Password` varchar(50) NOT NULL,
-  `UserRole` tinyint(1) NOT NULL DEFAULT 0,
-  `IsActivated` tinyint(1) NOT NULL DEFAULT 0,
-  `IsAccepted` tinyint(1) NOT NULL DEFAULT 0,
-  `token` timestamp NULL DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT 0,
+  `is_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `token` varchar(255) DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -150,9 +149,19 @@ ALTER TABLE `questions`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD UNIQUE KEY `UserName` (`UserName`),
-  ADD UNIQUE KEY `Phone` (`Phone`);
+  ADD UNIQUE KEY `Email` (`email`),
+  ADD UNIQUE KEY `UserName` (`name`),
+  ADD UNIQUE KEY `Phone` (`is_admin`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

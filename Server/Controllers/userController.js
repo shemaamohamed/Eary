@@ -4,7 +4,7 @@ const db = require('../DataBase/dbconnection');
 const randomstring = require('randomstring');
 const sendMail = require('../Helpers/sendMail');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = require('../dotenv');
 
 const register = (req, res) => {
     const errors = validationResult(req);
@@ -12,9 +12,9 @@ const register = (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     db.query(
-        `SELECT * FROM user WHERE LOWER(email) = LOWER(${db.escape(
+        `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(
             req.body.email
-        )};)`,
+        )});`,
         (err, result) => {
             if (result && result.length) {
                 return res.status(409).send({
@@ -25,10 +25,11 @@ const register = (req, res) => {
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
                         return res.status(400).send({
-                            msg: err
+                            msg: err.message
                         });
                     }
                     else {
+                        console.log(hash);
                         db.query(
                             `INSERT INTO users (name,email,password,image) VALUES ('${req.body.name}',${db.escape(
                                 req.body.email
@@ -43,7 +44,7 @@ const register = (req, res) => {
                                 const randomToken = randomstring.generate();
                                 let content = '<p> hi' + req.body.name + ', \please <a href="http://localhost:4000/mail-verification?token=' + randomToken + '"> Verify</a> your mail.';
                                 sendMail(req.body.email, mailSubject, content);
-                                db.query('UPDATE users set token=? where email=?', [randomToken, req.body.emai], function (error, result, fields) {
+                                db.query('UPDATE users set token=? where email=?', [randomToken, req.body.email], function (error, result, fields) {
                                     if (error) {
                                         return res.status(400).send({
                                             msg: err
@@ -87,22 +88,21 @@ const login = (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     db.query(
         `SELECT * FROM users WHERE email = ${db.escape(req.body.email)};`,
         (err, result) => {
             if (err) {
                 return res.status(400).send({
-                    msg: err
+                    msg: err.message
                 });
             }
-            if (result.length) {
+            if (!result.length) {
                 return res.status(401).send({
                     msg: 'email or password incorrect'
                 });
             }
             bcrypt.compare(
-                req.body.passwor,
+                req.body.password,
                 result[0]['password'],
                 (bErr, bResult) => {
                     if (bErr) {
@@ -111,12 +111,12 @@ const login = (req, res) => {
                         });
                     }
                     if (bResult) {
-                        // console.log(JWT_SECRET);
                         //admin
                         const token = jwt.sign({ id: result[0]['id'], is_admin: result[0]['is_admin'] }, JWT_SECRET, { expiresIn: '1h' });
                         db.query(
                             `UPDATE users SET last_login = now() WHERE id ='${result[0]['id']}'`
                         );
+                        delete result[0].password;
                         return res.status(200).send({
                             msg: 'logged in',
                             token,
@@ -131,7 +131,6 @@ const login = (req, res) => {
             );
         }
     );
-
 };
 
 const getUser = (req, res) => {
@@ -184,7 +183,6 @@ const forgetpassword = (req, res) => {
 
     });
 };
-
 const resetpasswordload = (req, res) => {
     try {
         var token = req.query.token;
