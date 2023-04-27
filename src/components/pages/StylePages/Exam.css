@@ -31,10 +31,17 @@
     -o-border-radius: 5px;
 }
 .question {
-   position: absolute;
-   top: 80%;
-   left: 40%;
+    position: absolute;
+    top: 80%;
+    left: 40%;
+    opacity: 100;
+    transition: all 250ms linear 1s;
+    -webkit-transition: all 250ms linear 1s;
+    -moz-transition: all 250ms linear 1s;
+    -ms-transition: all 250ms linear 1s;
+    -o-transition: all 250ms linear 1s;
 }
+
 .answers label{
     color: black !important;
     
@@ -63,3 +70,56 @@
   .answers input[type="radio"]:hover+label {
     background-color: #bbb;
   }
+
+  .Play-btn{
+    width: 20vh;
+    height: 20vh;
+    position: absolute;
+    background-color: #008080;
+    left: 46%;
+    transform: translate(-50,-50);
+    color: white;
+    font-size: 95px;
+    text-align: center;
+    border:#008080 solid ;
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    -ms-border-radius:50%;
+    -o-border-radius:50%;
+    -webkit-transform: translate(-50,-50);
+    -moz-transform: translate(-50,-50);
+    -ms-transform: translate(-50,-50);
+    -o-transform: translate(-50,-50);
+    cursor: pointer;
+   
+}
+.Play-btn:hover{
+    color: #008080;
+    background-color: white;
+
+}
+.ready h2{
+    text-align: center;
+    font-size: 50px;
+
+
+}
+.next{
+    
+    text-decoration: none;
+    border: none;
+    background-color: #008080;
+    padding: 10px;
+    font-size: 30px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: white;
+}
+.swap-questions{
+    position: absolute;
+    left: 35%;
+}

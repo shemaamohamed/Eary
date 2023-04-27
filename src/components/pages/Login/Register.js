@@ -1,7 +1,7 @@
 import React from 'react'
 import "../StylePages/Update.css"
 
-export const Register = () => {
+ const Register = () => {
   const handlesubmit =(e)=>{
     e.preventDefault();
 }
@@ -21,3 +21,4 @@ export const Register = () => {
     </form>
   )
 }
+export default Register;

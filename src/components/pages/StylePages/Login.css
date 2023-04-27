@@ -155,6 +155,11 @@ bottom: 5%;
     animation-duration:5s;
   }
   
+  .alert-danger {
+    --bs-alert-color: white;
+    --bs-alert-bg: #842029;
+    --bs-alert-border-color: none;
+  }
  
   
 
