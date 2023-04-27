@@ -10,7 +10,7 @@ const query = util.promisify(connection.query).bind(connection);
 
 const global_get = async (table, unique, value) => {
     try {
-        return await query(`SELECT * FROM ${table} WHERE ${unique} LIKE '%${value || ""}%'`);
+        return await query(`SELECT * FROM ${table} WHERE ${unique} = '${value}'`);
     } catch (err) {
         // console.log("global_get \n");
         // console.log(err);

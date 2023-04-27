@@ -13,7 +13,7 @@ const question_model = (request, randomstring, file) => {
     };
 };
 
-const question_get = async (value) => {
+const question_get_search = async (value) => {
     try {
         return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name LIKE '%${value || ""}%'`);
     } catch (err) {
@@ -21,6 +21,13 @@ const question_get = async (value) => {
     }
 };
 
+const question_get = async (value) => {
+    try {
+        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name = '${value}'`);
+    } catch (err) {
+        return false;
+    }
+};
 
 
 const datasql = (data, question) => {
@@ -34,4 +41,4 @@ const datasql = (data, question) => {
         "Discription": data.Discription || question[0].Discription
     };
 };
-module.exports = { question_model, question_get, datasql };
+module.exports = { question_model, question_get_search, question_get, datasql };

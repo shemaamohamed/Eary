@@ -1,6 +1,6 @@
 const { randomstring, query, global_get, global_insert, global_delete, global_update } = require('../Global_imports/Global');
 
-const { exam_model, exam_get, exam_question, datasql } = require('../Models/examModel');
+const { exam_model, exam_get_search, exam_get, datasql } = require('../Models/examModel');
 
 
 /*exam table[
@@ -12,7 +12,7 @@ number_of_questions
 let status = 400, message = "the operation was not successful";
 get_exams = async (req, res) => {
     data = req.body;
-    const exams = await exam_get(data.Name);
+    const exams = await exam_get_search(data.Name);
     if (!data.Name && !exams[0]) {
         status = 204;
         message = "no content";

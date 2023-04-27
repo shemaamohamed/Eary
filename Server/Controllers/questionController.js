@@ -2,7 +2,7 @@ const { fs, randomstring, global_get, global_insert, global_delete, global_updat
 
 const { upload, unlinkfile, sizeMB } = require('../Global_imports/file_upload');
 
-const { question_model, question_get, datasql } = require('../Models/questionModel');
+const { question_model, question_get, question_get_search, datasql } = require('../Models/questionModel');
 
 /*question table [
 Id (auto incremented),
@@ -17,7 +17,7 @@ Discription (optional)
 let status = 400, message = "the operation was not successful";
 const get_questions = async (req, res) => {
     const data = req.body;
-    const questions = await question_get(data.Name);
+    const questions = await question_get_search(data.Name);
     if (!data.Name && !questions[0]) {
         status = 204;
         message = "no content";

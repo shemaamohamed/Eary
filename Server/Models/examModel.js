@@ -17,9 +17,19 @@ const datasql = (data, exam) => {
     };
 };
 
-const exam_get = async (value) => {
+const exam_get_search = async (value) => {
     try {
         return await query(`SELECT Name, number_of_questions, Discription FROM exam WHERE Name LIKE '%${value || ""}%'`);
+    } catch (err) {
+        // console.log("exam_get \n");
+        // console.log(err);
+        return false;
+    }
+};
+
+const exam_get = async (value) => {
+    try {
+        return await query(`SELECT Name, number_of_questions, Discription FROM exam WHERE Name = '${value}'`);
     } catch (err) {
         // console.log("exam_get \n");
         // console.log(err);
@@ -37,4 +47,4 @@ const exam_question = async (Id) => {
     }
 };
 
-module.exports = { exam_model, exam_get, exam_question, datasql };
+module.exports = { exam_model, exam_get_search, exam_get, exam_question, datasql };
