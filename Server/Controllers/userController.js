@@ -142,8 +142,6 @@ const getUser = (req, res) => {
 
         return res.status(200).send({ success: true, data: result[0], message: 'fetch successfully' });
     });
-
-
 };
 
 const forgetpassword = (req, res) => {

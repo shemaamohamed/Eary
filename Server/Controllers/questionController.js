@@ -4,6 +4,7 @@ const { upload, unlinkfile, sizeMB } = require('../Global_imports/file_upload');
 
 const { question_model, question_get, question_get_search, datasql } = require('../Models/questionModel');
 
+const { admin } = require('../middleware/authorizations');
 /*question table [
 Id (auto incremented),
 Name (requird , unique),
@@ -16,25 +17,27 @@ Discription (optional)
 ]*/
 let status = 400, message = "the operation was not successful";
 const get_questions = async (req, res) => {
-    const data = req.body;
-    const questions = await question_get_search(data.Name);
-    if (!data.Name && !questions[0]) {
-        status = 204;
-        message = "no content";
-    }
-    else if (!questions[0]) {
-        status = 404;
-        message = "Not Found";
-    }
-    else {
-        status = 200;
-        message = questions;
-    }
-    res.status(status).send(message);
+    admin(req, res, async () => {
+        const data = req.body;
+        const questions = await question_get_search(data.Name);
+        if (!data.Name && !questions[0]) {
+            status = 204;
+            message = "no content";
+        }
+        else if (!questions[0]) {
+            status = 404;
+            message = "Not Found";
+        }
+        else {
+            status = 200;
+            message = questions;
+        }
+        res.status(status).send(message);
+    });
 };
 
 const post_questions = (req, res) => {
-    upload(req, res, async (err) => {
+    upload(admin, req, res, async (err) => {
         if (err) {
             if (err.message == "File too large") {
                 message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
@@ -76,7 +79,7 @@ const post_questions = (req, res) => {
 };
 
 const put_questions = (req, res) => {
-    upload(req, res, async (err) => {
+    upload(admin, req, res, async (err) => {
         if (err) {
             if (err.message == "File too large") {
                 message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
@@ -132,43 +135,45 @@ const put_questions = (req, res) => {
     });
 };
 
-const delete_questions = async (req, res) => {
-    const data = req.body;
-    if (!data.Name) {
-        status = 404;
-        message = "Not Found";
-    }
-    else {
-        const questionByName = await question_get(data.Name);
-        if (!questionByName[0]) {
+const delete_questions = (req, res) => {
+    admin(req, res, async () => {
+        const data = req.body;
+        if (!data.Name) {
             status = 404;
             message = "Not Found";
         }
         else {
-            const del = await global_delete("questions", "Name", data.Name);
-            if (del) {
-                status = 200;
-                message = "element deleted";
-                try {
-                    fs.unlink(questionByName[0].Audio, (err) => {
-                        if (err) {
-                            console.error(err);
-                            return;
-                        }
-                    });
-                } catch (err) {
-                    console.log(err);
-                    status = 500;
-                    message = err;
-                }
+            const questionByName = await question_get(data.Name);
+            if (!questionByName[0]) {
+                status = 404;
+                message = "Not Found";
             }
             else {
-                message = "could not delete";
+                const del = await global_delete("questions", "Name", data.Name);
+                if (del) {
+                    status = 200;
+                    message = "element deleted";
+                    try {
+                        fs.unlink(questionByName[0].Audio, (err) => {
+                            if (err) {
+                                console.error(err);
+                                return;
+                            }
+                        });
+                    } catch (err) {
+                        console.log(err);
+                        status = 500;
+                        message = err;
+                    }
+                }
+                else {
+                    message = "could not delete";
+                }
             }
-        }
 
-    }
-    res.status(status).send(message);
+        }
+        res.status(status).send(message);
+    });
 };
 
 module.exports = { get_questions, post_questions, put_questions, delete_questions };
