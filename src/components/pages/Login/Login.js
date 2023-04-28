@@ -4,8 +4,11 @@ import {Footer} from '../../Shared/Footer'
 import '../StylePages/Login.css'
 import { Button } from 'bootstrap'
 import axios from 'axios'
+import { setAuthUser } from '../../../helper/Storage'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const navigate = useNavigate();
 
   const [login, setlogin] = useState({
     email:"",
@@ -22,7 +25,9 @@ const Login = () => {
            }
            ).then((resp) => {
             setlogin({...login , loading:false,err:''})
-             
+            setAuthUser(resp.data);
+            navigate("/");
+            
            }
            ).catch((errors) => {
              setlogin({
@@ -40,9 +45,9 @@ const Login = () => {
     <div className="bg"></div>
     <div className="bg bg2"></div>
     <div className="bg bg3"></div>
-           
-                   
-       
+
+
+
     <div className='register'>
       <h3>Welcome!</h3>
       <p> Create Your Account.For Free!</p>
@@ -67,7 +72,7 @@ const Login = () => {
       }
       } ></input>
         <div className='login-submit'>
-           <button className='login-btn' type='submit'>Login</button>
+           <button className='login-btn' type='submit' disabled={login.loading===true}>Login</button>
         </div>
   
        
