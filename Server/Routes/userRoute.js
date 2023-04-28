@@ -33,7 +33,7 @@ const uplode = multer({
 //resister route
 router.post('/register', uplode.single('image'), userController.register, signupvalidation);
 router.post('/login', userController.login, loginvalidation);
-router.get('/get-user', isAuthorize, userController.getUser);
+router.get('/get-user', userController.getUser, isAuthorize);
 router.post('/forget-password', forgetvalidation, userController.forgetpassword);
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2023 at 10:03 PM
+-- Generation Time: Apr 28, 2023 at 01:25 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -103,6 +103,7 @@ CREATE TABLE `users` (
   `image` varchar(500) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0,
   `is_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `is_accepted` tinyint(1) NOT NULL DEFAULT 0,
   `token` varchar(255) DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
