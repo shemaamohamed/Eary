@@ -1,18 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Header } from '../../Shared/Header'
 import {Footer} from '../../Shared/Footer'
 import '../StylePages/Login.css'
 import { Button } from 'bootstrap'
+import axios from 'axios'
+import { setAuthUser } from '../../../helper/Storage'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [login, setlogin] = useState({
+    email:"",
+    password:"",
+    loading:false,
+    err:'',
+  });
     const handlesubmit =(e)=>{
            e.preventDefault();
+           setlogin({...login,loading:true , err:''})
+           axios.post("http://localhost:4000/api/login",{
+            email:login.email,
+            password:login.password,
+           }
+           ).then((resp) => {
+            setlogin({...login , loading:false,err:''})
+            setAuthUser(resp.data);
+            navigate("/");
+            
+           }
+           ).catch((errors) => {
+             setlogin({
+               ...login,
+               loading:false,
+               err: errors.response.data.msg
+              })
+              console.log(login);
+             
+           }
+           )
     }
   return (
    <div className='page'>
-    <div class="bg"></div>
-    <div class="bg bg2"></div>
-    <div class="bg bg3"></div>
+    <div className="bg"></div>
+    <div className="bg bg2"></div>
+    <div className="bg bg3"></div>
+
+
+
     <div className='register'>
       <h3>Welcome!</h3>
       <p> Create Your Account.For Free!</p>
@@ -20,14 +55,24 @@ const Login = () => {
       </div>
      <div className='cover'>
         <form onSubmit={handlesubmit} className='cover'>
-        <div className="alert alert-danger " role="alert">
-          A simple danger alert—check it out!
+       
+       {  
+        login.err &&<div  className="alert alert-danger " role="alert">
+          {login.err}
         </div>
+        }     
+       
       <h1 className='Login'>Login</h1>
-      <input required placeholder='Username' type="text"></input>
-      <input required placeholder='Password' type="password"></input>
+      <input required placeholder='E-mail' type="email" value={login.email} onChange={(e) => {
+        setlogin({...login,email:e.target.value})
+      }
+      } ></input>
+      <input required placeholder='Password' type="password" onChange={ (e)=>{
+        setlogin({...login,password:e.target.value})
+      }
+      } ></input>
         <div className='login-submit'>
-           <button className='login-btn' type='submit'>Login</button>
+           <button className='login-btn' type='submit' disabled={login.loading===true}>Login</button>
         </div>
   
        

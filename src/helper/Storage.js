@@ -3,7 +3,7 @@ export const setAuthUser = (data)=>{
 }
 
 export const getAuthUser = (data)=>{
-    if(localStorage.get("user")){
+    if(localStorage.getItem("user")){
         return JSON.parse(localStorage.getItem("user"))
     }
 }
