@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2023 at 01:25 AM
+-- Generation Time: Apr 29, 2023 at 03:16 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -54,7 +54,7 @@ CREATE TABLE `exam_question` (
 CREATE TABLE `history` (
   `user_id` int(11) NOT NULL,
   `exam_id` varchar(50) NOT NULL,
-  `quistion_id` varchar(50) NOT NULL,
+  `question_id` varchar(50) NOT NULL,
   `Answer` varchar(200) NOT NULL,
   `IsRight` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
@@ -99,6 +99,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
   `password` text NOT NULL,
   `image` varchar(500) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0,
@@ -133,9 +134,9 @@ ALTER TABLE `exam_question`
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`user_id`,`exam_id`,`quistion_id`),
+  ADD PRIMARY KEY (`user_id`,`exam_id`,`question_id`),
   ADD KEY `history_exam_id_constr` (`exam_id`),
-  ADD KEY `history_question_id_constr` (`quistion_id`);
+  ADD KEY `history_question_id_constr` (`question_id`);
 
 --
 -- Indexes for table `questions`
@@ -151,8 +152,8 @@ ALTER TABLE `questions`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `Email` (`email`),
-  ADD UNIQUE KEY `UserName` (`name`),
-  ADD UNIQUE KEY `Phone` (`is_admin`);
+  ADD UNIQUE KEY `name` (`name`) USING BTREE,
+  ADD UNIQUE KEY `phone` (`phone`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -180,7 +181,7 @@ ALTER TABLE `exam_question`
 --
 ALTER TABLE `history`
   ADD CONSTRAINT `history_exam_id_constr` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `history_question_id_constr` FOREIGN KEY (`quistion_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `history_question_id_constr` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `history_user_id_constr` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
