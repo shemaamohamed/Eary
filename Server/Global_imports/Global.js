@@ -5,7 +5,6 @@ const cors = require('cors');
 const multer = require('multer');
 const randomstring = require('randomstring');
 const connection = require('../DataBase/dbconnection');
-const { log } = require("console");
 
 const query = util.promisify(connection.query).bind(connection);
 
