@@ -1,6 +1,6 @@
 const { randomstring, query, global_get, global_insert, global_delete, global_update } = require('../Global_imports/Global');
 
-const { exam_model, exam_get_search, exam_get, datasql } = require('../Models/examModel');
+const { exam_post_model, exam_get_search, exam_get, exam_put_model } = require('../Models/examModel');
 
 const { admin, authorized } = require('../middleware/authorizations');
 
@@ -14,6 +14,7 @@ number_of_questions
 let status = 400, message = "the operation was not successful";
 get_exams = (req, res) => {
     authorized(req, res, async () => {
+        status = 400;
         data = req.body;
         const exams = await exam_get_search(data.Name);
         if (!data.Name && !exams[0]) {
@@ -33,11 +34,10 @@ get_exams = (req, res) => {
                     status = 200;
                     message.push(exams[i]);
                 }
-
             } catch (err) {
                 console.log(err);
                 status = 500;
-                message = err;
+                message = err.message;
             }
         }
         res.status(status).send(message);
@@ -45,9 +45,9 @@ get_exams = (req, res) => {
 };
 post_exams = (req, res) => {
     admin(req, res, async () => {
-        const data = exam_model(req, randomstring.generate());
+        status = 400;
+        const data = exam_post_model(req, randomstring.generate());
         let { questions, ...datafilterd } = data;
-        datafilterd.number_of_questions = 0;
         const checkexist = await exam_get(data.Name);
         if (!data.Name) {
             message = "requird fields was not sent";
@@ -58,55 +58,40 @@ post_exams = (req, res) => {
         else {
             const insertion_exam = await global_insert("exam", datafilterd);
             let notfound = [];
-            try {
-                if (!insertion_exam) {
-                    message = "could not add exam";
-                }
-                else if (questions) {
-                    let insertion = false;
-                    let exam_question = {
-                        "exam_id": "",
-                        "question_id": ""
-                    };
-                    if (Array.isArray(questions)) {
-                        for (let i = 0; i < questions.length; i++) {
-                            const qstn = await global_get("questions", "Name", questions[i]);
-                            if (qstn[0]) {
-                                exam_question = {
-                                    "exam_id": data.id,
-                                    "question_id": qstn[0].id
-                                };
-                                const insertion = await global_insert("exam_question", exam_question);
-                                if (insertion)
-                                    datafilterd.number_of_questions += 1;
-                            }
-                            else {
-                                notfound.push(questions[i]);
-                            }
-                        }
+            if (!insertion_exam) {
+                message = "could not add exam";
+            }
+            else if (questions) {
+                let insertion = false;
+                let exam_question = {
+                    "exam_id": "",
+                    "question_id": ""
+                };
+                for (let i = 0; i < questions.length; i++) {
+                    const qstn = await global_get("questions", "Name", questions[i]);
+                    if (qstn[0]) {
+                        exam_question = {
+                            "exam_id": data.id,
+                            "question_id": qstn[0].id
+                        };
+                        const insertion = await global_insert("exam_question", exam_question);
+                        if (!insertion)
+                            datafilterd.number_of_questions -= 1;
                     }
                     else {
-                        const qstn = await global_get("questions", "Name", questions);
-                        if (qstn[0]) {
-                            exam_question = {
-                                "exam_id": data.id,
-                                "question_id": qstn[0].id
-                            };
-                            insertion = await global_insert("exam_question", exam_question);
-                            if (insertion)
-                                datafilterd.number_of_questions = 1;
-                        }
-                        else {
-                            notfound.push(questions);
-                        }
+                        datafilterd.number_of_questions -= 1;
+                        notfound.push(questions[i]);
                     }
-                    await query(`UPDATE exam set number_of_questions='${datafilterd.number_of_questions}' WHERE id='${data.id}'`);
                 }
-                status = 200; message = (`exam added with ${datafilterd.number_of_questions} questions `) + (notfound[0] ? `( ${notfound} ) Not Found` : "");
-            } catch (err) {
-                await global_delete("exam", "id", datafilterd.id);
-                console.log(err);
-                status = 500; message = err;
+                try {
+                    const update = await query(`UPDATE exam set number_of_questions='${datafilterd.number_of_questions}' WHERE id='${data.id}'`);
+                    if (update.affectedRows > 0)
+                        status = 200; message = (`exam added with ${datafilterd.number_of_questions} questions `) + (notfound[0] ? `( ${notfound} ) Not Found` : "");
+                } catch (err) {
+                    await global_delete("exam", "id", datafilterd.id);
+                    console.log(err);
+                    status = 500; message = err.message;
+                }
             }
         }
         res.status(status).send(message);
@@ -114,7 +99,9 @@ post_exams = (req, res) => {
 };
 put_exams = (req, res) => {
     admin(req, res, async () => {
+        status = 400;
         const data = req.body;
+        const questions = Array.isArray(data.questions) ? data.questions : [data.questions];
         const exam = await global_get("exam", "Name", data.Name);
         if (!data.Name) {
             status = 404;
@@ -125,40 +112,14 @@ put_exams = (req, res) => {
             message = "Not Found";
         }
         else {
-            const data_sql = datasql(data, exam);
+            const data_sql = exam_put_model(data, exam);
             try {
-                if (data.questions) {
+                if (questions) {
                     let added = [], deleted = [], notfound = [];
-                    if (Array.isArray(data.questions)) {
-                        for (let i = 0; i < data.questions.length; i++) {
-                            const qstn = await global_get("questions", "Name", data.questions[i]);
-                            if (!qstn[0]) {
-                                notfound.push(data.questions[i]);
-                            }
-                            else {
-                                const haveqstn = await query(`SELECT * FROM exam_question WHERE exam_id='${exam[0].id}' AND question_id='${qstn[0].id}'`);
-                                if (haveqstn[0]) {
-                                    const del = await query(`DELETE FROM exam_question WHERE exam_id='${exam[0].id}' AND question_id='${qstn[0].id}'`);
-                                    if (del.affectedRows > 0) {
-                                        data_sql.number_of_questions -= 1;
-                                        deleted.push(qstn[0].Name);
-                                    }
-                                }
-                                else {
-                                    const insrt = await query(`INSERT INTO exam_question SET exam_id='${exam[0].id}' , question_id='${qstn[0].id}'`);
-                                    if (insrt.affectedRows > 0) {
-                                        data_sql.number_of_questions += 1;
-                                        added.push(qstn[0].Name);
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        const qstn = await global_get("questions", "Name", data.questions);
+                    for (let i = 0; i < questions.length; i++) {
+                        const qstn = await global_get("questions", "Name", questions[i]);
                         if (!qstn[0]) {
-                            notfound.push(data.questions);
+                            notfound.push(questions[i]);
                         }
                         else {
                             const haveqstn = await query(`SELECT * FROM exam_question WHERE exam_id='${exam[0].id}' AND question_id='${qstn[0].id}'`);
@@ -179,9 +140,8 @@ put_exams = (req, res) => {
                             }
                         }
                     }
-                    status = added[0] || deleted[0] ? 200 : 404;
+                    status = 200;
                     message = "exam updated " + (added[0] ? `( ${added} ) added , ` : "") + (deleted[0] ? `( ${deleted} ) deleted , ` : "") + (notfound[0] ? `( ${notfound} ) Not Found` : "");
-
                 }
                 const update_exam = await global_update("exam", data_sql, "Name", data.Name);
                 if (!update_exam) {
@@ -191,7 +151,7 @@ put_exams = (req, res) => {
             catch (err) {
                 console.log(err);
                 status = 500;
-                message = err;
+                message = err.message;
             }
         }
         res.status(status).send(message);
@@ -200,6 +160,7 @@ put_exams = (req, res) => {
 
 delete_exams = (req, res) => {
     admin(req, res, async () => {
+        status = 400;
         const data = req.body;
         if (!data.Name) {
             status = 404;
@@ -226,7 +187,7 @@ delete_exams = (req, res) => {
             } catch (err) {
                 console.log(err);
                 status = 500;
-                message = err;
+                message = err.message;
             }
         }
         res.status(status).send(message);

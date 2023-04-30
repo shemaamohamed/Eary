@@ -4,6 +4,7 @@ const admin = async (req, res, next) => {
     const { token } = req.headers;
     const admin = await query("select * from users where token = ?", [token]);
     if (admin[0] && admin[0].is_admin == 1) {
+        res.locals.user = admin[0];
         next();
     } else {
         return res.status(403).json({

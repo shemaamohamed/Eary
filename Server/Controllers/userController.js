@@ -1,15 +1,26 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
 const db = require('../DataBase/dbconnection');
 const randomstring = require('randomstring');
 const sendMail = require('../Helpers/sendMail');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../dotenv');
+const { unlinkfile } = require('../Global_imports/file_upload');
 
 const register = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        fs.unlink(req.file.path, (err) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+        });
         return res.status(400).json({ errors: errors.array() });
+    }
+    if (!req.file) {
+        return res.status(400).json({ errors: "file is not send" });
     }
     db.query(
         `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(
@@ -17,6 +28,12 @@ const register = (req, res) => {
         )});`,
         (err, result) => {
             if (result && result.length) {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                });
                 return res.status(409).send({
                     msg: 'user already in use'
                 });
@@ -29,7 +46,6 @@ const register = (req, res) => {
                         });
                     }
                     else {
-                        console.log(hash);
                         db.query(
                             `INSERT INTO users (name,email,password,image) VALUES ('${req.body.name}',${db.escape(
                                 req.body.email

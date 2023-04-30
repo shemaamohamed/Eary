@@ -37,106 +37,114 @@ const get_questions = async (req, res) => {
 };
 
 const post_questions = (req, res) => {
-    upload(admin, req, res, async (err) => {
-        if (err) {
-            if (err.message == "File too large") {
-                message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
-            }
-            else {
-                message = err.message;
-            }
-        }
-        else {
-            const file = req.file;
-            const data = question_model(req, randomstring.generate(), file);
-            const valid = data.Name && file && data.RightAnswer && data.Wrong1 && data.Wrong2 && data.Wrong3;
-            if (valid) {
-                const checkexist = await question_get(data.Name);
-                if (checkexist[0]) {
-                    unlinkfile(file);
-                    status = 403;
-                    message = "already existe";
+    admin(req, res, async () => {
+        upload(req, res, async (err) => {
+            status = 400;
+            if (err) {
+                if (err.message == "File too large") {
+                    message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
                 }
                 else {
-                    const insertion = await global_insert("questions", data);
-                    if (insertion) {
-                        status = 200;
-                        message = "element added";
-                    }
-                    else {
-                        unlinkfile(file);
-                        message = "could not add question";
-                    }
+                    console.log(err);
+                    message = err.message;
                 }
             }
             else {
-                unlinkfile(file);
-                message = "requird fields was not sent";
+                const file = req.file;
+                const data = question_model(req, randomstring.generate(), file);
+                const valid = data.Name && file && data.RightAnswer && data.Wrong1 && data.Wrong2 && data.Wrong3;
+                if (valid) {
+                    const checkexist = await question_get(data.Name);
+                    if (checkexist[0]) {
+                        unlinkfile(file);
+                        status = 403;
+                        message = "already existe";
+                    }
+                    else {
+                        const insertion = await global_insert("questions", data);
+                        if (insertion) {
+                            status = 200;
+                            message = "element added";
+                        }
+                        else {
+                            unlinkfile(file);
+                            message = "could not add question";
+                        }
+                    }
+                }
+                else {
+                    unlinkfile(file);
+                    message = "requird fields was not sent";
+                }
             }
-        }
-        res.status(status).send(message);
+            res.status(status).send(message);
+        });
     });
 };
 
 const put_questions = (req, res) => {
-    upload(admin, req, res, async (err) => {
-        if (err) {
-            if (err.message == "File too large") {
-                message = err.message + ` the maximux file size is ${sizeMB} megabyte`;
-            }
-            else {
-                message = err.message;
-            }
-        }
-        else {
-            const file = req.file;
-            const data = req.body;
-            if (file) { data.Audio = file.path; }
-            const question = await global_get("questions", "Name", data.Name);
-            if (!data.Name) {
-                unlinkfile(file);
-                status = 404;
-                message = "Not Found";
-            }
-            else if (!question[0]) {
-                unlinkfile(file);
-                status = 404;
-                message = "Not Found";
-            }
-            else {
-                const old_audio = question[0].Audio;
-                const data_sql = datasql(data, question);
-                const update_question = await global_update("questions", data_sql, "Name", data.Name);
-                if (update_question) {
-                    status = 200;
-                    message = "element updated";
-                    try {
-                        if (file) {
-                            fs.unlink(old_audio, async (err) => {
-                                if (err) {
-                                    console.error(err);
-                                    return;
-                                }
-                            });
-                        }
-                    } catch (error) {
-                        unlinkfile(file);
-                        console.log(err);
-                        status = 500;
-                        message = err;
-                    }
+    admin(req, res, async () => {
+        upload(req, res, async (err) => {
+            status = 400;
+            if (err) {
+                if (err.message == "File too large") {
+                    message = err.message + ` the maximum file size is ${sizeMB} megabyte`;
                 }
                 else {
-                    message = "could not update question";
+                    message = err.message;
                 }
             }
-        }
-        res.status(status).send(message);
+            else {
+                const file = req.file;
+                const data = req.body;
+                if (file) { data.Audio = file.path; }
+                const question = await global_get("questions", "Name", data.Name);
+                if (!data.Name) {
+                    unlinkfile(file);
+                    status = 404;
+                    message = "Not Found";
+                }
+                else if (!question[0]) {
+                    unlinkfile(file);
+                    status = 404;
+                    message = "Not Found";
+                }
+                else {
+                    const old_audio = question[0].Audio;
+                    const data_sql = datasql(data, question);
+                    const update_question = await global_update("questions", data_sql, "Name", data.Name);
+                    if (update_question) {
+                        status = 200;
+                        message = "element updated";
+                        try {
+                            if (file) {
+                                fs.unlink(old_audio, async (err) => {
+                                    if (err) {
+                                        console.error(err);
+                                        return;
+                                    }
+                                });
+                            }
+                        } catch (error) {
+                            unlinkfile(file);
+                            console.log(err);
+                            status = 500;
+                            message = err.message;
+                        }
+                    }
+                    else {
+                        message = "could not update question";
+                    }
+                }
+            }
+            res.status(status).send(message);
+        });
     });
 };
 
 const delete_questions = (req, res) => {
     admin(req, res, async () => {
+        status = 400;
         const data = req.body;
         if (!data.Name) {
             status = 404;
@@ -163,7 +171,7 @@ const delete_questions = (req, res) => {
                     } catch (err) {
                         console.log(err);
                         status = 500;
-                        message = err;
+                        message = err.message;
                     }
                 }
                 else {

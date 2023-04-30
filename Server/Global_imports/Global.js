@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const randomstring = require('randomstring');
 const connection = require('../DataBase/dbconnection');
+const { log } = require("console");
 
 const query = util.promisify(connection.query).bind(connection);
 
@@ -18,21 +19,21 @@ const global_get = async (table, unique, value) => {
     }
 };
 
-const global_insert = async (table, data) => {
+const global_insert = async (table, set) => {
     try {
-        const insertion = await query(`INSERT INTO ${table} SET ?`, data);
+        const insertion = await query(`INSERT INTO ${table} SET ?`, set);
         return insertion.affectedRows > 0;
     }
     catch (err) {
-        // console.log("global_insert \n");
-        // console.log(err);
+        console.log("global_insert \n");
+        console.log(err);
         return false;
     }
 };
 
-const global_update = async (table, data, unique, value) => {
+const global_update = async (table, set, unique, value) => {
     try {
-        const update = await query(`UPDATE ${table} SET ? WHERE ${unique} = '${value}'`, data);
+        const update = await query(`UPDATE ${table} SET ? WHERE ${unique} = '${value}'`, set);
         return update.affectedRows > 0;
     }
     catch (err) {
@@ -48,8 +49,8 @@ const global_delete = async (table, unique, value) => {
         return deletion.affectedRows > 0;
     }
     catch (err) {
-        // console.log("global_delete\n");
-        // console.log(err);
+        console.log("global_delete\n");
+        console.log(err);
         return false;
     }
 };

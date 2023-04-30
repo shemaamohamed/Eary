@@ -10,7 +10,7 @@ token,
 last_login,
 created_at (defualt current_timestamp() ),
 updated_at (defualt current_timestamp() ),
-MaxScore
+last_score
 ]
 
 exam table[

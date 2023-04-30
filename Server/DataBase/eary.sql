@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2023 at 03:16 PM
+-- Generation Time: Apr 30, 2023 at 02:04 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -99,17 +99,17 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `phone` varchar(20) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `password` text NOT NULL,
   `image` varchar(500) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT 0,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `is_verified` tinyint(1) NOT NULL DEFAULT 0,
   `is_accepted` tinyint(1) NOT NULL DEFAULT 0,
   `token` varchar(255) DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `MaxScore` int(11) DEFAULT NULL
+  `last_score` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

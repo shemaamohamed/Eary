@@ -6,6 +6,7 @@ const app = express();
 
 const questionsRoute = require('./Routes/questionRoute');
 const examsRoute = require('./Routes/examRoute');
+const historyRoute = require('./Routes/historyRoute');
 const userRouter = require('./Routes/userRoute');
 const webRouter = require('./Routes/webRoute');
 
@@ -20,6 +21,7 @@ app.use('/api', userRouter);
 app.use('/', webRouter);
 app.use('/questions', questionsRoute);
 app.use('/exams', examsRoute);
+app.use('/history', historyRoute);
 
 
 
