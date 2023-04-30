@@ -5,7 +5,7 @@ import '../StylePages/Login.css'
 import { Button } from 'bootstrap'
 import axios from 'axios'
 import { setAuthUser } from '../../../helper/Storage'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const Login = () => {
     <div className='register'>
       <h3>Welcome!</h3>
       <p> Create Your Account.For Free!</p>
-      <button type='sumbit'>Register</button>
+      <Link to={"/register"} className='Register-btn' type='sumbit'>Register</Link>
       </div>
      <div className='cover'>
         <form onSubmit={handlesubmit} className='cover'>

@@ -94,5 +94,11 @@ color: white;
  to {scale: 1.7;}
  
 }
+.sideNav ul li a {
+    text-decoration: none !important;
+    color: black;
+    
+     
+}
 
 
