@@ -9,13 +9,13 @@ const question_model = (request, randomstring, file) => {
         "Wrong1": request.body.Wrong1,
         "Wrong2": request.body.Wrong2,
         "Wrong3": request.body.Wrong3,
-        "Discription": request.body.Discription
+        "Description": request.body.Description
     };
 };
 
 const question_get_search = async (value) => {
     try {
-        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name LIKE '%${value || ""}%'`);
+        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Description FROM questions WHERE Name LIKE '%${value || ""}%'`);
     } catch (err) {
         return false;
     }
@@ -23,7 +23,7 @@ const question_get_search = async (value) => {
 
 const question_get = async (value) => {
     try {
-        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Discription FROM questions WHERE Name = '${value}'`);
+        return await query(`SELECT  Name, Audio, RightAnswer,Wrong1, Wrong2, Wrong3, Description FROM questions WHERE Name = '${value}'`);
     } catch (err) {
         return false;
     }
@@ -38,7 +38,7 @@ const datasql = (data, question) => {
         "Wrong1": data.Wrong1 || question[0].Wrong1,
         "Wrong2": data.Wrong2 || question[0].Wrong2,
         "Wrong3": data.Wrong3 || question[0].Wrong3,
-        "Discription": data.Discription || question[0].Discription
+        "Description": data.Description || question[0].Description
     };
 };
 module.exports = { question_model, question_get_search, question_get, datasql };

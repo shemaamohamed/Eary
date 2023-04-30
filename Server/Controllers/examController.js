@@ -8,7 +8,7 @@ const { admin, authorized } = require('../middleware/authorizations');
 /*exam table[
 Id (auto incremented),
 Name (requird , unique),
-Discription (optional),
+Description (optional),
 number_of_questions
 ] */
 let status = 400, message = "the operation was not successful";

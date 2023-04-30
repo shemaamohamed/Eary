@@ -133,8 +133,14 @@ const put_history = (req, res) => {
                             }
                         }
                         if (number_of_questions === exam_questions[0].number_of_questions) {
+                            const score = await get_score(user.id, exam_questions[0].exam_id);
+                            await global_update("users", { "last_score": score }, "id", user.id);
                             status = 200;
-                            message = "history updated successfully";
+                            message = {
+                                msg: "history saved successfully",
+                                "old_score": user.last_score,
+                                "score": score
+                            };
                         }
                         else {
                             message = "faild to update";
