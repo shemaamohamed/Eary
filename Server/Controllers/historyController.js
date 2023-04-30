@@ -77,7 +77,6 @@ const post_history = (req, res) => {
                         }
                         if (number_of_questions === exam_questions[0].number_of_questions) {
                             const score = await get_score(user.id, exam_questions[0].exam_id);
-                            await global_update("users", { "last_score": score }, "id", user.id);
                             status = 200;
                             message = {
                                 msg: "history saved successfully",
@@ -127,6 +126,7 @@ const put_history = (req, res) => {
                         let number_of_questions = 0;
                         const questions_answers = Array.isArray(data.questions_answers) ? data.questions_answers : [data.questions_answers];
                         const history = history_post_model(questions_answers, user, exam_questions);
+                        const old_score = await get_score(user.id, exam_questions[0].exam_id);
                         for (let i = 0; i < history.length; i++) {
                             const update = await query(`UPDATE history SET Answer=? ,IsRight=? WHERE user_id = ${user.id} AND exam_id ='${history[i].exam_id}' AND question_id= '${history[i].question_id}'`, [history[i].Answer, history[i].IsRight]); //global_update("history", set, `user_id = ${user.id} AND exam_id ='${history[i].exam_id}' AND question_id= `, history[i].question_id); //global_insert("history", history[i]);
                             if (update.affectedRows > 0) {
@@ -135,11 +135,10 @@ const put_history = (req, res) => {
                         }
                         if (number_of_questions === exam_questions[0].number_of_questions) {
                             const score = await get_score(user.id, exam_questions[0].exam_id);
-                            await global_update("users", { "last_score": score }, "id", user.id);
                             status = 200;
                             message = {
                                 msg: "history saved successfully",
-                                "old_score": user.last_score,
+                                "old_score": old_score,
                                 "score": score
                             };
                         }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2023 at 01:19 AM
+-- Generation Time: May 01, 2023 at 08:35 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -56,7 +56,7 @@ CREATE TABLE `history` (
   `user_id` int(11) NOT NULL,
   `exam_id` varchar(50) NOT NULL,
   `question_id` varchar(50) NOT NULL,
-  `Answer` varchar(200) NOT NULL,
+  `Answer` varchar(200) DEFAULT NULL,
   `IsRight` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -110,8 +110,7 @@ CREATE TABLE `users` (
   `token` varchar(255) DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `last_score` int(11) DEFAULT NULL
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
