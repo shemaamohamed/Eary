@@ -47,8 +47,9 @@ post_exams = (req, res) => {
     admin(req, res, async () => {
         status = 400;
         const data = exam_post_model(req, randomstring.generate());
-        let { questions, ...datafilterd } = data;
+        const { questions, ...datafilterd } = data;
         const checkexist = await exam_get(data.Name);
+        let notfound = [], notadded = [];
         if (!data.Name) {
             message = "requird fields was not sent";
         }
@@ -57,12 +58,10 @@ post_exams = (req, res) => {
         }
         else {
             const insertion_exam = await global_insert("exam", datafilterd);
-            let notfound = [];
             if (!insertion_exam) {
                 message = "could not add exam";
             }
-            else if (questions) {
-                let insertion = false;
+            else if (questions[0]) {
                 let exam_question = {
                     "exam_id": "",
                     "question_id": ""
@@ -76,22 +75,24 @@ post_exams = (req, res) => {
                         };
                         const insertion = await global_insert("exam_question", exam_question);
                         if (!insertion)
-                            datafilterd.number_of_questions -= 1;
+                            notadded.push(questions[i]);
+
                     }
                     else {
-                        datafilterd.number_of_questions -= 1;
                         notfound.push(questions[i]);
                     }
                 }
-                try {
-                    const update = await query(`UPDATE exam set number_of_questions='${datafilterd.number_of_questions}' WHERE id='${data.id}'`);
-                    if (update.affectedRows > 0)
-                        status = 200; message = (`exam added with ${datafilterd.number_of_questions} questions `) + (notfound[0] ? `( ${notfound} ) Not Found` : "");
-                } catch (err) {
-                    await global_delete("exam", "id", datafilterd.id);
-                    console.log(err);
-                    status = 500; message = err.message;
-                }
+            }
+            try {
+                const count = await query(`SELECT COUNT(*) FROM exam_question WHERE exam_question.exam_id='${data.id}'`);
+                const number_of_questions = count[0]["COUNT(*)"] || 0;
+                const update = await query(`UPDATE exam set number_of_questions=${number_of_questions} WHERE id='${data.id}'`);
+                if (update.affectedRows > 0)
+                    status = 200; message = (`exam added with ${number_of_questions} questions `) + (notfound[0] ? `, ( ${notfound} ) Not Found` : "") + (notadded[0] ? `, ( ${notadded} ) Not Found` : "");
+            } catch (err) {
+                await global_delete("exam", "id", data.id);
+                console.log(err);
+                status = 500; message = err.message;
             }
         }
         res.status(status).send(message);
@@ -126,14 +127,12 @@ put_exams = (req, res) => {
                             if (haveqstn[0]) {
                                 const del = await query(`DELETE FROM exam_question WHERE exam_id='${exam[0].id}' AND question_id='${qstn[0].id}'`);
                                 if (del.affectedRows > 0) {
-                                    data_sql.number_of_questions -= 1;
                                     deleted.push(qstn[0].Name);
                                 }
                             }
                             else {
                                 const insrt = await query(`INSERT INTO exam_question SET exam_id='${exam[0].id}' , question_id='${qstn[0].id}'`);
                                 if (insrt.affectedRows > 0) {
-                                    data_sql.number_of_questions += 1;
                                     added.push(qstn[0].Name);
                                 }
 
@@ -143,6 +142,8 @@ put_exams = (req, res) => {
                     status = 200;
                     message = "exam updated " + (added[0] ? `( ${added} ) added , ` : "") + (deleted[0] ? `( ${deleted} ) deleted , ` : "") + (notfound[0] ? `( ${notfound} ) Not Found` : "");
                 }
+                const count = await query(`SELECT COUNT(*) FROM exam_question WHERE exam_question.exam_id='${exam[0].id}'`);
+                data_sql.number_of_questions = count[0]["COUNT(*)"] || 0;
                 const update_exam = await global_update("exam", data_sql, "Name", data.Name);
                 if (!update_exam) {
                     message = "could not update exam";
