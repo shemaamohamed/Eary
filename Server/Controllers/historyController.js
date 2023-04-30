@@ -157,20 +157,26 @@ const put_history = (req, res) => {
 const delete_history = (req, res) => {
     admin(req, res, async () => {
         status = 400;
-        const find_exam = await query(`SELECT exam_id FROM history WHERE exam_id=(SELECT id FROM exam WHERE Name = '${req.body.exam_Name}')`);
-        if (!find_exam[0]) {
-            status = 404;
-            message = "Not Found";
-        }
-        else {
-            const del = await global_delete('history', 'exam_id', find_exam[0].exam_id);
-            if (del) {
-                status = 200;
-                message = `(${req.body.exam_Name}) deleted from history`;
+        try {
+            const find_exam = await query(`SELECT exam_id FROM history WHERE exam_id=(SELECT id FROM exam WHERE Name = '${req.body.exam_Name}')`);
+            if (!find_exam[0]) {
+                status = 404;
+                message = "Not Found";
             }
             else {
-                message = `could not delete (${req.body.exam_Name}) from history `;
+                const del = await global_delete('history', 'exam_id', find_exam[0].exam_id);
+                if (del) {
+                    status = 200;
+                    message = `(${req.body.exam_Name}) deleted from history`;
+                }
+                else {
+                    message = `could not delete (${req.body.exam_Name}) from history `;
+                }
             }
+        } catch (err) {
+            status = 500;
+            console.log(err);
+            message = err.message;
         }
         res.status(status).send(message);
     });
