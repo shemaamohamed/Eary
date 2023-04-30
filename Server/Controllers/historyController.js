@@ -179,7 +179,7 @@ const delete_history = (req, res) => {
                     message = `(${req.body.exam_Name}) deleted from history`;
                 }
                 else {
-                    message = `could not delete (${req.body.exam_Name}) from history `;
+                    message = `could not delete ( ${req.body.exam_Name} ) from history `;
                 }
             }
         } catch (err) {
