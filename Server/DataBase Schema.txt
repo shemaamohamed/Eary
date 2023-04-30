@@ -17,7 +17,8 @@ exam table[
 Id (auto incremented),
 Name (requird , unique),
 number_of_questions,
-Discription (optional)
+Description (optional)
+created_at (defualt current_timestamp())
 ]
 
 question table [
@@ -28,7 +29,8 @@ RightAnswer (requird),
 Wrong1 (requird),
 Wrong2 (requird),
 Wrong3 (requird),
-Discription (optional)
+Description (optional),
+created_at (defualt current_timestamp())
 ]
 
 exam_question table[
@@ -43,13 +45,14 @@ exam_id (requird),
 quistion_id (requird),
 Id (composite primary key[user_id , exam_id , quistion_id]),
 Answer (requird),
-IsRight (defualt false)
+IsRight (defualt false),
+created_at (defualt current_timestamp())
 ]
 
 password_resets[
 Email (requird , unique),
 token ,
-created_at
+created_at (defualt current_timestamp())
 ]
 
 

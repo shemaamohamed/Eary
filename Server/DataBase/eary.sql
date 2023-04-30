@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2023 at 12:26 AM
+-- Generation Time: May 01, 2023 at 01:19 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -31,7 +31,8 @@ CREATE TABLE `exam` (
   `id` varchar(50) NOT NULL,
   `Name` varchar(200) NOT NULL,
   `number_of_questions` int(11) DEFAULT 0,
-  `Description` text DEFAULT NULL
+  `Description` text DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -86,7 +87,8 @@ CREATE TABLE `questions` (
   `Wrong1` varchar(200) NOT NULL,
   `Wrong2` varchar(200) NOT NULL,
   `Wrong3` varchar(200) NOT NULL,
-  `Description` text DEFAULT NULL
+  `Description` text DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
