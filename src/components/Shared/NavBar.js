@@ -2,7 +2,8 @@ import { faBook, faCircleUser, faGears, faRightFromBracket } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import  {React, useState ,useEffect} from 'react'
 import '../Shared/SharedStyle/NavBar.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { getAuthUser, removeAuthUser } from '../../helper/Storage'
 
 
 const NavBar = () => {
@@ -25,16 +26,19 @@ const NavBar = () => {
     }, [])
     
 
-
+    
+const auth = getAuthUser();
+const navigate = useNavigate();
     const Logout=()=>{
-
+      removeAuthUser();
+      navigate("/");
     }
   return (
     <div>
     <div className='container'>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
-    <Link  to={"/Home"}><img className="navbar-brand" src='logo1.png'></img></Link>
+    <Link  to={"/Home"}><img className="navbar-brand" alt='' src='logo1.png'></img></Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
@@ -78,7 +82,7 @@ const NavBar = () => {
       <ul >
         <li className='User_id'><FontAwesomeIcon className='mx-1' icon={faGears} /><Link to={"/Update"}>update profile</Link></li>
         <li  className='User_id'><FontAwesomeIcon className='mx-2' icon={faBook} /><Link to={"/History"}>History</Link></li>
-        <li  className='User_out'><FontAwesomeIcon className='mx-2' icon={faRightFromBracket} /><a onClick={Logout()}>Logout</a></li>
+        <li  className='User_out'><FontAwesomeIcon className='mx-2' icon={faRightFromBracket} /><Link to={"/"} onClick={Logout}>Logout</Link></li>
          </ul>
       </div>
     </div>

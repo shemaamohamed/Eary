@@ -52,7 +52,7 @@
  
   
 }
-.register{
+.register {
     position: absolute;
     left: 0;
     font-size: 20px;
@@ -65,7 +65,7 @@
 .register h3{
     text-align: center;
 }
-.register button{
+.register a{
     color: white;
     background: gray;
     border: solid 1px #008080;
@@ -98,11 +98,12 @@
 }
 
 
-.create-account{
+.Register-btn{
     text-decoration: none;
     color: gray;
+    text-align: center;
 }
-.create-account:hover{
+.Register-btn:hover{
     color: black;
 }
 
