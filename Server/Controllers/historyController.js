@@ -21,6 +21,7 @@ const get_history = (req, res) => {
                 message = "Not Found";
             }
             else {
+                status = 200;
                 message = [];
                 for (let i = 0; i < history_exam_question.length; i += history_exam_question[i].number_of_questions) {
                     const history = {
