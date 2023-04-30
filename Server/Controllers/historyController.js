@@ -11,8 +11,12 @@ const get_history = (req, res) => {
         const data = req.body;
         const user = res.locals.user;
         try {
-            const history_exam_question = await query(`SELECT exam_id,exam.Name AS exam_Name,questions.Name AS question_Name,Answer,IsRight,created_at,exam.number_of_questions FROM history LEFT JOIN exam ON exam.Name LIKE '%${data.exam_Name}%' INNER JOIN questions ON questions.Name=questions.Name  WHERE user_id = ${user.id} AND exam.id = exam_id AND questions.id = question_id`);
-            if (!history_exam_question[0]) {
+            const history_exam_question = await query(`SELECT exam_id,exam.Name AS exam_Name,questions.Name AS question_Name,Answer,IsRight,created_at,exam.number_of_questions FROM history LEFT JOIN exam ON exam.Name LIKE '%${data.exam_Name || ""}%' INNER JOIN questions ON questions.Name=questions.Name  WHERE user_id = ${user.id} AND exam.id = exam_id AND questions.id = question_id`);
+            if (!data.exam_Name && !history_exam_question[0]) {
+                status = 204;
+                message = "No Content";
+            }
+            else if (!history_exam_question[0]) {
                 status = 404;
                 message = "Not Found";
             }
@@ -122,10 +126,9 @@ const put_history = (req, res) => {
                         let number_of_questions = 0;
                         const questions_answers = Array.isArray(data.questions_answers) ? data.questions_answers : [data.questions_answers];
                         const history = history_post_model(questions_answers, user, exam_questions);
-                        await query(`DELETE FROM history WHERE user_id=${user.id} AND exam_id='${exam_questions[0].exam_id}'`);
                         for (let i = 0; i < history.length; i++) {
-                            const insertion = await global_insert("history", history[i]);
-                            if (insertion) {
+                            const update = await query(`UPDATE history SET Answer=? ,IsRight=? WHERE user_id = ${user.id} AND exam_id ='${history[i].exam_id}' AND question_id= '${history[i].question_id}'`, [history[i].Answer, history[i].IsRight]); //global_update("history", set, `user_id = ${user.id} AND exam_id ='${history[i].exam_id}' AND question_id= `, history[i].question_id); //global_insert("history", history[i]);
+                            if (update.affectedRows > 0) {
                                 number_of_questions++;
                             }
                         }
@@ -134,7 +137,6 @@ const put_history = (req, res) => {
                             message = "history updated successfully";
                         }
                         else {
-                            await query(`DELETE FROM history WHERE user_id=${user.id} AND exam_id='${exam_questions[0].exam_id}'`);
                             message = "faild to update";
                         }
                     }
@@ -157,20 +159,26 @@ const put_history = (req, res) => {
 const delete_history = (req, res) => {
     admin(req, res, async () => {
         status = 400;
-        const find_exam = await query(`SELECT exam_id FROM history WHERE exam_id=(SELECT id FROM exam WHERE Name = '${req.body.exam_Name}')`);
-        if (!find_exam[0]) {
-            status = 404;
-            message = "Not Found";
-        }
-        else {
-            const del = await global_delete('history', 'exam_id', find_exam[0].exam_id);
-            if (del) {
-                status = 200;
-                message = `(${req.body.exam_Name}) deleted from history`;
+        try {
+            const find_exam = await query(`SELECT exam_id FROM history WHERE exam_id=(SELECT id FROM exam WHERE Name = '${req.body.exam_Name}')`);
+            if (!find_exam[0]) {
+                status = 404;
+                message = "Not Found";
             }
             else {
-                message = `could not delete (${req.body.exam_Name}) from history `;
+                const del = await global_delete('history', 'exam_id', find_exam[0].exam_id);
+                if (del) {
+                    status = 200;
+                    message = `(${req.body.exam_Name}) deleted from history`;
+                }
+                else {
+                    message = `could not delete (${req.body.exam_Name}) from history `;
+                }
             }
+        } catch (err) {
+            status = 500;
+            console.log(err);
+            message = err.message;
         }
         res.status(status).send(message);
     });
