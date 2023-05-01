@@ -8,7 +8,7 @@ const exam_post_model = (request, randomstring) => {
         "questions": Array.isArray(request.body.questions) ? request.body.questions : [request.body.questions]
     };
 };
-const exam_put_model = async (data, exam) => {
+const exam_put_model = (data, exam) => {
     return {
         "Name": data.NewName || data.Name,
         "number_of_questions": exam[0].number_of_questions,
