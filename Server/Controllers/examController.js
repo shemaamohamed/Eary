@@ -144,7 +144,7 @@ put_exams = (req, res) => {
                 }
                 const count = await query(`SELECT COUNT(*) FROM exam_question WHERE exam_question.exam_id='${exam[0].id}'`);
                 data_sql.number_of_questions = count[0]["COUNT(*)"] || 0;
-                const update_exam = await global_update("exam", data_sql, "id", exam[0].id);
+                const update_exam = await global_update("exam", data_sql, "Name", data.Name);
                 if (!update_exam) {
                     message = "could not update exam";
                 }
