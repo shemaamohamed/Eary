@@ -11,12 +11,7 @@ const { unlinkfile } = require('../Global_imports/file_upload');
 const register = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        fs.unlink(req.file.path, (err) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-        });
+        unlinkfile(req.file);
         return res.status(400).json({ errors: errors.array() });
     }
     if (!req.file) {
@@ -28,12 +23,7 @@ const register = (req, res) => {
         )});`,
         (err, result) => {
             if (result && result.length) {
-                fs.unlink(req.file.path, (err) => {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                });
+                unlinkfile(req.file);
                 return res.status(409).send({
                     msg: 'user already in use'
                 });

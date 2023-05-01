@@ -19,6 +19,7 @@ let status = 400, message = "the operation was not successful";
 const get_questions = async (req, res) => {
     admin(req, res, async () => {
         const data = req.body;
+        status = 400;
         const questions = await question_get_search(data.Name);
         if (!data.Name && !questions[0]) {
             status = 204;

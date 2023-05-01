@@ -10,7 +10,6 @@ token,
 last_login,
 created_at (defualt current_timestamp() ),
 updated_at (defualt current_timestamp() ),
-last_score
 ]
 
 exam table[
@@ -44,7 +43,7 @@ user_id (requird),
 exam_id (requird),
 quistion_id (requird),
 Id (composite primary key[user_id , exam_id , quistion_id]),
-Answer (requird),
+Answer,
 IsRight (defualt false),
 created_at (defualt current_timestamp())
 ]

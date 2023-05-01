@@ -35,7 +35,6 @@ const unlinkfile = (file) => {
         });
         return true;
     }
-    console.log("no file to delete");
     return false;
 
 };
