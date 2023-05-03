@@ -1,6 +1,5 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
 const db = require('../DataBase/dbconnection');
 const randomstring = require('randomstring');
 const sendMail = require('../Helpers/sendMail');
@@ -17,6 +16,7 @@ const register = (req, res) => {
     if (!req.file) {
         return res.status(400).json({ errors: "file is not send" });
     }
+    const path = "'" + `public\\\\images\\\\${req.file.filename}` + "'";
     db.query(
         `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(
             req.body.email
@@ -37,9 +37,9 @@ const register = (req, res) => {
                     }
                     else {
                         db.query(
-                            `INSERT INTO users (name,email,password,image) VALUES ('${req.body.name}',${db.escape(
+                            `INSERT INTO users (name,email,password,image,phone) VALUES ('${req.body.name}',${db.escape(
                                 req.body.email
-                            )},${db.escape(hash)},'images/${req.file.filename}');`,
+                            )},${db.escape(hash)},${path},'${req.body.phone || ""}');`,
                             (err, result) => {
                                 if (err) {
                                     return res.status(400).send({

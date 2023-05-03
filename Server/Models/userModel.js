@@ -19,7 +19,9 @@ const user_get = async (value) => {
 
 const user_put_model = (data, user) => {
     return {
-        "is_admin": data.is_admin || user[0].is_admin,
+        "name": data.newname || data.name,
+        "email": data.email || user[0].email,
+        "phone": data.phone || user[0].phone,
         "is_accepted": data.is_accepted || user[0].is_accepted
     };
 };

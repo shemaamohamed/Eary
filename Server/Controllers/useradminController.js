@@ -1,6 +1,6 @@
 const { admin, authorized } = require('../middleware/authorizations');
 
-const { query, global_get, global_insert, global_delete, global_update } = require('../Global_imports/Global');
+const { fs, query, global_get, global_insert, global_delete, global_update } = require('../Global_imports/Global');
 
 const { user_get_search, user_get, user_put_model } = require('../Models/userModel');
 
@@ -19,6 +19,9 @@ const get_user = async (req, res) => {
         else if (!users[0]) {
             status = 404;
             message = "Not Found";
+        }
+        else if (users.length == 1 && user[0].name == currentuser.name) {
+            message = "you can not get your account throw this request";
         }
         else {
             users.splice(users.findIndex((user) => user.name == currentuser.name), 1);
@@ -58,6 +61,7 @@ const put_user = (req, res) => {
                 message = "could not update user";
             }
             else {
+                status = 200;
                 message = "user updated";
             }
         }
@@ -86,6 +90,12 @@ const delete_user = (req, res) => {
             else {
                 const del = await global_delete("users", "Name", data.name);
                 if (del) {
+                    fs.unlink(userByName[0].image, (err) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                    });
                     status = 200;
                     message = "user deleted";
                 }
