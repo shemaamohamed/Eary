@@ -11,7 +11,7 @@ const get_history = (req, res) => {
         const data = req.body;
         const user = res.locals.user;
         try {
-            const history_exam_question = await query(`SELECT exam_id,exam.Name AS exam_Name,questions.Name AS question_Name,Answer,IsRight,created_at,exam.number_of_questions FROM history LEFT JOIN exam ON exam.Name LIKE '%${data.exam_Name || ""}%' INNER JOIN questions ON questions.Name=questions.Name  WHERE user_id = ${user.id} AND exam.id = exam_id AND questions.id = question_id`);
+            const history_exam_question = await query(`SELECT exam_id,exam.Name AS exam_Name,questions.Name AS question_Name,Answer,IsRight,history.created_at,exam.number_of_questions FROM history LEFT JOIN exam ON exam.Name LIKE '%${data.exam_Name || ""}%' INNER JOIN questions ON questions.Name=questions.Name  WHERE user_id = ${user.id} AND exam.id = exam_id AND questions.id = question_id`);
             if (!data.exam_Name && !history_exam_question[0]) {
                 status = 204;
                 message = "No Content";
