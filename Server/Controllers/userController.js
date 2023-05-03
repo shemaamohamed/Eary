@@ -6,6 +6,7 @@ const sendMail = require('../Helpers/sendMail');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../dotenv');
 const { unlinkfile } = require('../Global_imports/file_upload');
+const { query, global_get, global_insert, global_update, global_delete } = require('../Global_imports/Global');
 
 const register = (req, res) => {
     const errors = validationResult(req);
@@ -150,6 +151,29 @@ const getUser = (req, res) => {
     });
 };
 
+const user_put = async (req, res) => {
+    let status = 400, message = "the operation was not successful";
+    const user = res.locals.user;
+    data = req.body;
+    const data_sql = {
+        "name": data.newname || user.name,
+        "phone": data.phone || user.phone,
+        "updated_at": new Date()
+    };
+    const users = await query(`SELECT name,email,phone FROM users WHERE name='${data.newname || ""}'AND name != '${user.name}' OR phone=${data.phone || null} AND phone!=${user.phone} `);
+    if (users[0]) {
+        message = (users.find(q => q.name == data.newname) ? "name already in use" : "") + (users.find(q => q.phone == data.phone) ? " , phone already in use" : "");
+    }
+    else {
+        const update = await global_update("users", data_sql, "name", user.name);
+        if (update) {
+            status = 200;
+            message = "user updated";
+        }
+    }
+    res.status(status).send(message);
+};
+
 const forgetpassword = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -231,5 +255,5 @@ const resetpassword = (req, res) => {
 };
 
 module.exports = {
-    register, verifyMail, login, getUser, forgetpassword, resetpasswordload, resetpassword
+    register, verifyMail, login, getUser, user_put, forgetpassword, resetpasswordload, resetpassword
 };

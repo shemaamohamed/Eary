@@ -36,6 +36,7 @@ router.post('/register', uplode.single('image'), signupvalidation, usercontrolle
 router.post('/login', loginvalidation, usercontroller.login);
 router.get('/get-user', authorized, usercontroller.getUser);
 router.post('/forget-password', forgetvalidation, usercontroller.forgetpassword);
+router.post('/user_put', authorized, usercontroller.user_put);
 
 
 module.exports = router;

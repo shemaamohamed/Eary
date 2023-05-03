@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 01, 2023 at 08:35 AM
+-- Host: localhost:3306
+-- Generation Time: May 04, 2023 at 01:21 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -70,7 +70,7 @@ CREATE TABLE `history` (
 CREATE TABLE `password_resets` (
   `user_email` varchar(50) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -108,9 +108,9 @@ CREATE TABLE `users` (
   `is_verified` tinyint(1) NOT NULL DEFAULT 0,
   `is_accepted` tinyint(1) NOT NULL DEFAULT 0,
   `token` varchar(255) DEFAULT NULL,
-  `last_login` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `last_login` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
