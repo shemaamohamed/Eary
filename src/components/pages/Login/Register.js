@@ -64,6 +64,7 @@ import { useNavigate } from 'react-router-dom';
     formData.append("email", register.email);
     formData.append("password",register.password);
     console.log(image.current.files);
+    // only one image 
     if (image.current.files && image.current.files[0]) {
       formData.append("image", image.current.files[0]);
     }

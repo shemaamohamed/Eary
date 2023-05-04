@@ -5,6 +5,7 @@ import Login from "./components/pages/Login/Login";
 import App from "./App";
 import Exam from "./components/pages/UserPages/Exam";
 import { ManageTest } from "./components/pages/AdminPages/ManageTest";
+import Guest from "./middleware/Guest";
 
 export const routes = createBrowserRouter([
   {
@@ -16,12 +17,18 @@ export const routes = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/register",
-        element: <Register></Register>,
+        element:<Guest></Guest>,
+        children:
+        [
+          {
+            path: "/login",
+            element: <Login></Login>,
+          },
+          {
+            path: "/register",
+            element: <Register></Register>,
+          },
+      ]
       },
       {
         path:"/Exam",

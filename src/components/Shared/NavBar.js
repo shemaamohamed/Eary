@@ -44,13 +44,27 @@ const navigate = useNavigate();
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          {/* Authenticated routes  */}
+
+      
         <li className="nav-item">
           <Link className="nav-link " aria-current="page" to={"/"}>Home</Link>
         </li>
-        
+        {
+            auth&& (
         <li className="nav-item">
           <Link className="nav-link " aria-current="page" to={"/Exam"}> Hearing exam </Link>
         </li>
+            )
+          }
+          {
+            !auth &&(
+            <li className="nav-item">
+            <Link className="nav-link " aria-current="page" to={"/Login"}> Hearing exam </Link>
+          </li>
+            )
+          }
+       
         
         <li className="nav-item">
           <Link className="nav-link " aria-current="page" to={"/Home"}>About</Link>
@@ -65,8 +79,14 @@ const navigate = useNavigate();
        
         
       </ul>
-      
-      <Link className="nav-link p-3  " aria-current="page"to="/login">Login</Link>
+      {
+        
+        !auth &&(
+
+          <Link className="nav-link p-3  " aria-current="page"to="/login">Login</Link>
+
+        )
+      }
       
       <div className="d-flex" role="search">
  
@@ -82,7 +102,12 @@ const navigate = useNavigate();
       <ul >
         <li className='User_id'><FontAwesomeIcon className='mx-1' icon={faGears} /><Link to={"/Update"}>update profile</Link></li>
         <li  className='User_id'><FontAwesomeIcon className='mx-2' icon={faBook} /><Link to={"/History"}>History</Link></li>
-        <li  className='User_out'><FontAwesomeIcon className='mx-2' icon={faRightFromBracket} /><Link to={"/"} onClick={Logout}>Logout</Link></li>
+        {
+          auth&&(
+            <li  className='User_out'><FontAwesomeIcon className='mx-2' icon={faRightFromBracket} /><Link to={"/"} onClick={Logout}>Logout</Link></li>
+
+          )
+        }
          </ul>
       </div>
     </div>
