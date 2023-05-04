@@ -152,24 +152,45 @@ const getUser = (req, res) => {
 };
 
 const user_put = async (req, res) => {
-    let status = 400, message = "the operation was not successful";
+    let status = 400, message = "the operation was not successful", msg = "";
     const user = res.locals.user;
-    data = req.body;
-    const data_sql = {
-        "name": data.newname || user.name,
-        "phone": data.phone || user.phone,
-        "updated_at": new Date()
-    };
-    const users = await query(`SELECT name,email,phone FROM users WHERE name='${data.newname || ""}'AND name != '${user.name}' OR phone=${data.phone || null} AND phone!=${user.phone} `);
-    if (users[0]) {
-        message = (users.find(q => q.name == data.newname) ? "name already in use" : "") + (users.find(q => q.phone == data.phone) ? " , phone already in use" : "");
+    const data = req.body;
+    const valid = data.old_password && data.new_password ? true : !data.old_password && !data.new_password ? true : false;
+    if (valid) {
+        const data_sql = {
+            "name": data.newname || user.name,
+            "phone": data.phone || user.phone,
+            "updated_at": new Date()
+        };
+        const userpass = await query(`SELECT password FROM users WHERE name='${user.name}'`);
+        if (data.old_password && data.new_password) {
+            const old_password = await bcrypt.compare(data.old_password || "", userpass[0].password);
+            if (old_password && data.new_password.length >= 8) {
+                const new_passwrod = await bcrypt.hash(data.new_password, 10);
+                data_sql.password = new_passwrod;
+            }
+            else if (!old_password && data.new_password || data.new_password.length < 8) {
+                msg = (!old_password ? " , old password is not correct" : "") + (data.new_password.length < 8 ? " , the new password is required min 8 length" : "");
+            }
+        }
+        const otherusers = await query(`SELECT name,email,phone FROM users WHERE name='${data.newname || ""}'AND name != '${user.name}' OR phone=${data.phone || null} AND phone!=${user.phone} `);
+        if (otherusers[0]) {
+            message = (otherusers.find(q => q.name == data.newname) ? "name already in use" : "") + (otherusers.find(q => q.phone == data.phone) ? " , phone already in use" : "");
+        }
+        else {
+            const update = msg == "" ? await global_update("users", data_sql, "name", user.name) : false;
+            if (update) {
+                status = 200;
+                message = "user updated";
+            }
+            else {
+                message = "faild to update" + msg;
+            }
+        }
+
     }
     else {
-        const update = await global_update("users", data_sql, "name", user.name);
-        if (update) {
-            status = 200;
-            message = "user updated";
-        }
+        message = `you have to send the ${!data.old_password ? "old" : "new"} password`;
     }
     res.status(status).send(message);
 };
