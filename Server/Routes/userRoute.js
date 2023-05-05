@@ -8,21 +8,23 @@ const { admin, authorized } = require('../middleware/authorizations');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../public/images'));
+        // cb(null, path.join(__dirname, '../public/images'));
+        cb(null, "upload/")
     },
     filename: function (req, file, cb) {
-        const name = Date.now() + '-' + file.originalname;
-        cb(null, name);
+        // const name = Date.now() + '-' + file.originalname;
+        // cb(null, name);
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
-const filefilter = (req, file, cb) => {
-    (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png' || file.mimetype == 'image/x-png') ? cb(null, true) : cb(null, false);
-};
+// const filefilter = (req, file, cb) => {
+//     (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png' || file.mimetype == 'image/x-png') ? cb(null, true) : cb(null, false);
+// };
 
 const uplode = multer({
     storage: storage,
-    fileFilter: filefilter
+    // fileFilter: filefilter
 });
 
 const { signupvalidation, loginvalidation, forgetvalidation } = require('../helpers/validation');

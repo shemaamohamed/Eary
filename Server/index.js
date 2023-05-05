@@ -24,7 +24,8 @@ app.use('/', webRouter);
 app.use('/questions', questionsRoute);
 app.use('/exams', examsRoute);
 app.use('/history', historyRoute);
-
+app.use(express.static("upload"));
+app.use(express.static("Audios"));
 
 
 app.use((err, req, res, next) => {
