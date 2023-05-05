@@ -6,21 +6,31 @@ import axios from "axios";
 import { getAuthUser } from "../../../helper/Storage";
 
 const Exam = () => {
+  const [shufflearr, setshufflearr] = useState([])
+  const [answers, setanswers] = useState([])
+  const [Grade, setGrade] = useState(0)
+  const [radioans, setradioans] = useState();
   const auth = getAuthUser();
+  const [startIndex, setstartIndex] = useState(-1)
+  const [question, setquestion] = useState('')
   const [audioStart, setplay] = useState(false);
+  const [randomExam, setRandomExam] = useState(null)
+  const [Trigger, setTrigger] = useState(0)
+  const [answercp, setanswercp] = useState([])
+  const [examName, setexamName] = useState('')
+  const [HistoryData, setHistoryData] = useState({
+    exam_name:'',
+    questions_answers:[]
+  })
+  
 
   const [exam, setExam] = useState({
     loading: true,
     err: null,
     data: []
-
-    
   });
-  const [question, setquestion] = useState([]
-
-  )
   const audio =[];
-
+  
   
   
   
@@ -44,7 +54,6 @@ const Exam = () => {
         });
       });
     }},  [audioStart]);
-    const [randomExam, setRandomExam] = useState(null)
 
     useEffect(() => {
       if(exam.data.length>0){
@@ -61,52 +70,149 @@ const Exam = () => {
 
 
 
-    // exam.data.forEach((item,index) => {
-      
-  //     const exams=exam.data.length;
-  //     for (let i = 0; i < exams ;i ++) {
-  //       question.push(exam.data[i])
-  //       console.log(question);
-       
-        
-  //     }
-  // // }
-  // //   );
-  // console.log(question.questions);
-  
-    
-  //    const [SelectedExam, setSelectedExam] = useState({
-  //     Name:'',
-  //     questions:[],
-  //    })
-  //   setSelectedExam({Name:question.at(1)})
-
   const play = () => {
     setplay(true);
     HandleplayAudios(audio[0]);
-  //  randomExam.questions.slice(0,1).map((item)=>{return(
-  //     new Audio(item.Audio).play()
-  //  )})
   };
   
   
-  const  HandleplayAudios = (src) => {
+  const HandleplayAudios = async (src) => {
     
-    new Audio(`http://localhost:4000/${src}`).play()
-    
+   const audio= new Audio(`http://localhost:4000/${src}`)
+    audio.loop=false;
+    audio.play();
   }
   
-  const [startIndex, setstartIndex] = useState(0)
   const handleNextQuestion=()=>{
-    if(startIndex+1<randomExam.number_of_questions){
+    if(startIndex+1<randomExam.number_of_questions-1){
     setstartIndex(startIndex+1)
     console.log(startIndex);
     HandleplayAudios();
+  }
+  setTrigger(Trigger+1);
+  console.log(radioans);
+  console.log(question);
+  console.log(examName);
+
+  setHistoryData({...HistoryData,
+    exam_Name:examName,
+    questions_answers:[...HistoryData.questions_answers,{question:question,answer:radioans}]
+  })
+
+  
+  
+  // HandleRightAnswers(radioans);
 }
 
+useEffect(() => {
+  console.log(HistoryData);
 
+  if (Trigger===4) {
+    
+    axios
+      .post(
+        "http://localhost:4000/history",HistoryData,{
+          headers:{
+            token:auth.token,
+            "Content-Type":"application/json"
+            
+          }
+        }
+       
+      )
+      .then((resp) => {
+        // setHistoryData({ err: null,  loading: false });
+        console.log(resp);
+       
+      })
+      .catch((errors) => {
+        console.log(errors);
+      });
   }
 
+}, [Trigger])
+
+
+
+
+
+useEffect(() => {
+
+  console.log(answers);
+  console.log(shufflearr);
+  console.log(radioans);
+  
+  // if (startIndex<randomExam.number_of_questions-1) {
+    
+    if (radioans==answers.RightAnswer){
+      setGrade(Grade+1)
+      console.log(Grade);
+    }
+    console.log(Trigger);
+    console.log(Grade);
+
+
+  
+
+}, [Trigger])
+
+
+  
+
+  const shuffleArray=(arr)=>{
+    return arr.sort(()=>Math.random()- 0.5);
+  }
+
+  
+ 
+  
+  // if (randomExam) {
+  //   randomExam.questions.slice(startIndex,startIndex+1).map((question, index)=>{console.log(question)
+  //     {HandleplayAudios(question.Audio.slice(7))}
+    
+  //      var answers =[
+  //        question.RightAnswer,
+  //        question.Wrong1,
+  //        question.Wrong2,
+  //        question.Wrong3
+  //      ]
+
+  //         console.log(answers);
+  //      
+  //           }
+  //           )    
+  //         }
+          
+  //         const [array, setarray] = useState([])
+  var shuffledArray=[]
+  console.log(examName);
+  console.log(question);
+  useEffect(() => {
+    if(randomExam){
+      setanswers (randomExam.questions[startIndex+1])
+      let arr=[
+        randomExam.questions[startIndex+1].RightAnswer,
+        randomExam.questions[startIndex+1].Wrong1,
+        randomExam.questions[startIndex+1].Wrong2,
+        randomExam.questions[startIndex+1].Wrong3
+      ]
+      let audio = randomExam.questions[startIndex+1].Audio
+      HandleplayAudios(audio.slice(7))
+
+      setexamName(randomExam.Name)
+      setquestion(randomExam.questions[startIndex+1].Name)
+
+      
+      shuffledArray = shuffleArray(arr)
+      shuffledArray.push()
+      setshufflearr(shuffledArray)
+      // setanswercp(answer)
+       
+      }
+    }, [randomExam,startIndex])
+    const handleradiochange=(e)=>{
+      setradioans(e.target.value);
+    }
 
   return (
     <div>
@@ -116,88 +222,35 @@ const Exam = () => {
             <audio src=""></audio>
             <h2> What did you hear ? </h2>
             <div className="answers">
-
+              
              {
-              randomExam ? (
-
-                <>
-
-                { randomExam.questions.slice(startIndex,startIndex+1).map((question, index)=>{
-                    
-                    {HandleplayAudios(question.Audio.slice(7))}
-                    //  { new Audio(question.Audio.slice(7)).play()} 
-                    return(
-                  <>
-                 
-                   
-                    
-                  
-                      <input 
-                      type="radio"
-                      className="btn-check"
-                      name="options"
-                      id={"option1"}
-                      autoComplete="off"
-                    />
-                    <label className="btn btn-primary" htmlFor={"option1"} >
-                    {question.RightAnswer}
-                    </label>
-
-
-                    <input 
-                      type="radio"
-                      className="btn-check"
-                      name="options"
-                      id={"option2"}
-                      autoComplete="off"
-                    />
-                    <label className="btn btn-primary" htmlFor={"option2"}>
-                    {question.Wrong1}
-                    </label>
-
-
-                    <input 
-                      type="radio"
-                      className="btn-check"
-                      name="options"
-                      id={"option3"}
-                      autoComplete="off"
-                    />
-                    <label className="btn btn-primary" htmlFor={"option3"}  >
-                    {question.Wrong2}
-                    </label>
-
-
-                    <input 
-                      type="radio"
-                      className="btn-check"
-                      name="options"
-                      id={"option4"}
-                      autoComplete="off"
-                    />
-                    <label className="btn btn-primary" htmlFor={"option4"}  >
-                    {question.Wrong3}
-                    </label>
-</>
-
-
-
-                    
-
-                    )
-                    }
-                )
-                
-                    
-                
-                }
-              </>
-
-              ):(
-                <p>Loading...!</p>
-
-              )
+               startIndex>=-1 && Trigger<=randomExam?.number_of_questions-1 ? (
+                 shufflearr.map((ans,index)=>(
+                   <div key={index}>
+                <input 
+                key={index}
+                type="radio"
+                className="btn-check"
+                name="options"
+                id={"option"+index}
+                autoComplete="off"
+                onChange={handleradiochange}
+                checked={radioans===ans}
+                value={ans}
+                />
+              <label className="btn btn-primary" htmlFor={"option"+index} >
+              {ans}
+              </label>
+              </div>
+              ))):(<p className="text-center fs-2">You Got {Grade-1}/{randomExam?.number_of_questions} </p>)
              }
+
+             
+              
+             
+
+              
+             
 
             </div>
             <div className="swap-questions ">
@@ -211,6 +264,7 @@ const Exam = () => {
           <div className="Play-btn" onClick={play}>
             <FontAwesomeIcon icon={faPlay} />
           </div>
+          <p className="fs-4 text-center position-absolute top-50 end-50 start-50  ">Please Use HeadPhones For Better Experience..</p>
         </div>
       )}
     </div>

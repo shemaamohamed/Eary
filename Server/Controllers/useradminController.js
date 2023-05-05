@@ -20,7 +20,7 @@ const get_user = async (req, res) => {
             status = 404;
             message = "Not Found";
         }
-        else if (users.length == 1 && user[0].name == currentuser.name) {
+        else if (users.length == 1 && users[0].name == currentuser.name) {
             message = "you can not get your account throw this request";
         }
         else {
