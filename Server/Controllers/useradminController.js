@@ -24,9 +24,9 @@ const get_user = async (req, res) => {
             message = "you can not get your account throw this request";
         }
         else {
-            const currentuser = users.findIndex((user) => user.name == currentuser.name);
-            if (currentuser >= 0)
-                users.splice(users.findIndex((user) => user.name == currentuser.name), 1);
+            const currentuserindex = await users.findIndex((user) => user.name == currentuser.name);
+            if (currentuserindex >= 0)
+                users.splice(currentuserindex, 1);
             status = 200;
             message = users;
         }

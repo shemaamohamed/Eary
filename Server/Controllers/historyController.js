@@ -24,14 +24,16 @@ const get_history = (req, res) => {
                 status = 200;
                 message = [];
                 for (let i = 0; i < history_exam_question.length; i += history_exam_question[i].number_of_questions) {
+                    const hours = parseInt(history_exam_question[i].created_at.toISOString()[11] + history_exam_question[i].created_at.toISOString()[12]) + 3;
+                    const created_at = history_exam_question[i].created_at.toISOString().replace(/T../, ` ${hours}`).replace(/\.\d+Z$/, '');
                     const history = {
                         "exam_Name": history_exam_question[i].exam_Name,
-                        "created_at": history_exam_question[i].created_at,
+                        "created_at": created_at,
                         "Number_of_questions": history_exam_question[i].number_of_questions
                     };
                     const questions = await query(`SELECT questions.Name,questions.Audio,questions.RightAnswer,questions.Wrong1,questions.Wrong2,questions.Wrong3,Answer,IsRight FROM questions LEFT JOIN exam ON exam.Name = '${history_exam_question[i].exam_Name}'  INNER JOIN history ON history.user_id=${user.id} AND history.exam_id=exam.id AND history.question_id=questions.id;`);
                     history.questions = questions;
-                    const score = await get_score(user.id, history_exam_question[i].exam_id);
+                    const score = await get_score(user.id, history_exam_question[i].exam_id, created_at);
                     history.score = score;
                     message.push(history);
                 }
