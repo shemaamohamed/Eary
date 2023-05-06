@@ -42,7 +42,7 @@ histoy table[
 user_id (requird),
 exam_id (requird),
 quistion_id (requird),
-Id (composite primary key[user_id , exam_id , quistion_id]),
+Id (composite primary key[user_id , exam_id , quistion_id,created_at]),
 Answer,
 IsRight (defualt false),
 created_at (defualt current_timestamp())

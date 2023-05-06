@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 04, 2023 at 01:21 AM
+-- Generation Time: May 06, 2023 at 03:03 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -135,7 +135,7 @@ ALTER TABLE `exam_question`
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`user_id`,`exam_id`,`question_id`),
+  ADD PRIMARY KEY (`user_id`,`exam_id`,`question_id`,`created_at`),
   ADD KEY `history_exam_id_constr` (`exam_id`),
   ADD KEY `history_question_id_constr` (`question_id`);
 
