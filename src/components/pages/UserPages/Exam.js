@@ -142,7 +142,6 @@ useEffect(() => {
   console.log(shufflearr);
   console.log(radioans);
   
-  // if (startIndex<randomExam.number_of_questions-1) {
     
     if (radioans==answers.RightAnswer){
       setGrade(Grade+1)
@@ -163,27 +162,6 @@ useEffect(() => {
     return arr.sort(()=>Math.random()- 0.5);
   }
 
-  
- 
-  
-  // if (randomExam) {
-  //   randomExam.questions.slice(startIndex,startIndex+1).map((question, index)=>{console.log(question)
-  //     {HandleplayAudios(question.Audio.slice(7))}
-    
-  //      var answers =[
-  //        question.RightAnswer,
-  //        question.Wrong1,
-  //        question.Wrong2,
-  //        question.Wrong3
-  //      ]
-
-  //         console.log(answers);
-  //      
-  //           }
-  //           )    
-  //         }
-          
-  //         const [array, setarray] = useState([])
   var shuffledArray=[]
   console.log(examName);
   console.log(question);
@@ -242,7 +220,7 @@ useEffect(() => {
               {ans}
               </label>
               </div>
-              ))):(<p className="text-center fs-2">You Got {Grade-1}/{randomExam?.number_of_questions} </p>)
+              ))):(<p className="text-center fs-2">You Got {Grade}/{randomExam?.number_of_questions} </p>)
              }
 
              

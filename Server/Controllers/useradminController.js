@@ -20,13 +20,13 @@ const get_user = async (req, res) => {
             status = 404;
             message = "Not Found";
         }
-        else if (users.length == 1 && user[0].name == currentuser.name) {
+        else if (users.length == 1 && users[0].name == currentuser.name) {
             message = "you can not get your account throw this request";
         }
         else {
-            const currentuser = users.findIndex((user) => user.name == currentuser.name);
-            if (currentuser >= 0)
-                users.splice(users.findIndex((user) => user.name == currentuser.name), 1);
+            const currentuserindex = await users.findIndex((user) => user.name == currentuser.name);
+            if (currentuserindex  >= 0)
+                users.splice(currentuserindex, 1);
             status = 200;
             message = users;
         }
