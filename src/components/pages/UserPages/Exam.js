@@ -9,7 +9,7 @@ const Exam = () => {
   const [shufflearr, setshufflearr] = useState([])
   const [answers, setanswers] = useState([])
   const [Grade, setGrade] = useState(0)
-  const [radioans, setradioans] = useState();
+  const [radioans, setradioans] = useState('');
   const auth = getAuthUser();
   const [startIndex, setstartIndex] = useState(-1)
   const [question, setquestion] = useState('')
