@@ -33,7 +33,7 @@ const get_history = (req, res) => {
                     };
                     const questions = await query(`SELECT questions.Name,questions.Audio,questions.RightAnswer,questions.Wrong1,questions.Wrong2,questions.Wrong3,Answer,IsRight FROM questions LEFT JOIN exam ON exam.Name = '${history_exam_question[i].exam_Name}'  INNER JOIN history ON history.user_id=${user.id} AND history.exam_id=exam.id AND history.question_id=questions.id;`);
                     history.questions = questions;
-                    const score = await get_score(user.id, history_exam_question[i].exam_id, created_at);
+                    const score = await get_score(user.id, history_exam_question[i].exam_id,history_exam_question[i].created_at.toISOString().replace('T', ' ').replace(/\.\d+Z$/, ''));
                     history.score = score;
                     message.push(history);
                 }

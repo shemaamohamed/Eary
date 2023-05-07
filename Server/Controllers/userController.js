@@ -17,7 +17,7 @@ const register = (req, res) => {
     if (!req.file) {
         return res.status(400).json({ errors: "file is not send" });
     }
-    const path = "'" + `public\\\\images\\\\${req.file.filename}` + "'";
+    const path = "'" + `upload\\\\${req.file.filename}` + "'";
     db.query(
         `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(
             req.body.email
