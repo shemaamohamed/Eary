@@ -6,7 +6,6 @@ export const SideAdmin = () => {
     <div className='side'>
         <button >ManageQuestion</button>
         <button>ManaageUsers</button>
-        <button>Registeration approvement</button>
 
     </div>
   )

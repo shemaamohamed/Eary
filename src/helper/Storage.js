@@ -1,8 +1,9 @@
 export const setAuthUser = (data)=>{
     localStorage.setItem("user", JSON.stringify(data.user));
+
 }
 
-export const getAuthUser = (data)=>{
+export const getAuthUser = ()=>{
     if(localStorage.getItem("user")){
         return JSON.parse(localStorage.getItem("user"))
     }
