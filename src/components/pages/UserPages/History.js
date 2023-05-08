@@ -1,7 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../StylePages/History.css'
+import axios from 'axios'
+import { getAuthUser } from '../../../helper/Storage'
+import { Link } from 'react-router-dom'
 
 const History = () => {
+
+  const [History, setHistory] = useState({
+    loading:true,
+    err:null,
+    data:[],
+
+  })
+
+
+
+  const auth=getAuthUser();
+  useEffect(() => {
+    
+    axios.get("http://localhost:4000/history",{
+      headers:{
+        token:auth.token
+      }
+    }).then((resp) => {
+      console.log(resp.data);
+      setHistory({...History, data:resp.data, loading: false, err: null });
+      
+    }
+    ).catch((err) => {
+      console.log(err);
+      setHistory({...History, loading: false, err: err })
+    }
+    )
+  
+   
+  }, [])
+  
   return (
     <div>
          <table class="history-table">
@@ -14,24 +48,32 @@ const History = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Exam 1</td>
-            <td>0/5</td>
-            <td>28/3/2023</td>
-            <td><a href='#'>View</a></td>
+          {
+          !History.loading ? (
+            History.data.map((item) => {
+              return(
+              <tr>
+            <td>{item.exam_Name}</td>
+            <td>{item.score}</td>
+            <td>{item.created_at}</td>
+            <td><Link to={"/Exam"}>View</Link></td>
           </tr>
-          <tr class="active-row">
-            <td>Exam 2</td>
-            <td>1/5</td>
-            <td>28/3/2023</td>
-            <td><a href='#'>View</a></td>
-          </tr>
-          <tr>
-            <td>Exam 3</td>
-            <td>3/5</td>
-            <td>28/3/2023</td>
-            <td><a href='#'>View</a></td>
-          </tr>
+              )
+            }
+            )
+
+          ):(
+            <p>
+              loading ...!
+            </p>
+          )
+          
+          
+
+
+
+
+          }
         </tbody>
       </table>
     </div>

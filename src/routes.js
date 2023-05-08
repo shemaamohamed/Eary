@@ -6,6 +6,7 @@ import App from "./App";
 import Exam from "./components/pages/UserPages/Exam";
 import { ManageTest } from "./components/pages/AdminPages/ManageTest";
 import Guest from "./middleware/Guest";
+import History from "./components/pages/UserPages/History";
 
 export const routes = createBrowserRouter([
   {
@@ -28,11 +29,17 @@ export const routes = createBrowserRouter([
             path: "/register",
             element: <Register></Register>,
           },
+        
       ]
       },
       {
         path:"/Exam",
         element:<Exam></Exam>
+      }, 
+      { 
+        path:"/history",
+        element:<History></History>
+
       },
       {
         path:"/manage_test",
