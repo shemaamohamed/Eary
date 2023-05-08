@@ -4,23 +4,25 @@ import Register from "./components/pages/Login/Register";
 import Login from "./components/pages/Login/Login";
 import App from "./App";
 import Exam from "./components/pages/UserPages/Exam";
-import { ManageTest } from "./components/pages/AdminPages/ManageTest";
+import { ManageTest } from "./components/pages/AdminPages/ManageTests/ManageTest";
+import { AddTest } from "./components/pages/AdminPages/ManageTests/AddTest";
+import { UpdateTest } from "./components/pages/AdminPages/ManageTests/UpdateTest";
 import Guest from "./middleware/Guest";
+
+
 import History from "./components/pages/UserPages/History";
 
-export const routes = createBrowserRouter([
+export const routes = createBrowserRouter(
   {
     path:'',
     element:<App></App>,
     children:[
-        {
+      {
         path: "/",
         element: <Home></Home>,
-      },
-      {
+      },{
         element:<Guest></Guest>,
-        children:
-        [
+        children:[
           {
             path: "/login",
             element: <Login></Login>,
@@ -44,12 +46,10 @@ export const routes = createBrowserRouter([
       {
         path:"/manage_test",
         element:<ManageTest></ManageTest>
-      }
+      },
 
-    ],
-},
 {
 path:'*',
 element:<Navigate to={'/'}></Navigate>,
 }
-]);
+]});

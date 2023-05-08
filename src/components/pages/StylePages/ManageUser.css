@@ -26,16 +26,19 @@
   color: white;
     background: #008080;
     border-radius: 8px;
-    width:35%;
-    height: 40px;
+
     border: white;
     text-transform: capitalize;
+    padding: 5px;
+    text-decoration: none;
 }
 .btn-up:hover , .users button:hover{
   background: gray;
   color: white;
 
 }
+
+
 #search{
   text-align: center;
 }
@@ -45,6 +48,7 @@
   justify-content: center;
   margin: 10px 0px;
   text-align: center;
+  flex-direction: column;
 }
 .users table{
   width:90%;

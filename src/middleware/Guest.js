@@ -6,7 +6,7 @@ const Guest = () => {
   
    const auth = getAuthUser();
    return<>
-   { !auth ?<Outlet/> : <Navigate to= {"/"}/>
+   { !auth||auth.is_admin==0 ? <Outlet/> : <Navigate to= {"/"}/>
    
    
    }
