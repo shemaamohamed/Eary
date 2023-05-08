@@ -9,6 +9,7 @@ import { getAuthUser, removeAuthUser } from '../../helper/Storage'
 const NavBar = () => {
     const UserOn='sideNav'
     const [User, setUser] = useState(UserOn)
+    
     const Close=()=>{
 
         setUser('sideNavNone')
@@ -81,15 +82,17 @@ const navigate = useNavigate();
       </ul>
       {
         
-        !auth &&(
+        !auth ?(
 
           <Link className="nav-link p-3  " aria-current="page"to="/login">Login</Link>
 
+        ):(
+          <Link className="nav-link p-3  " aria-current="page"to="/updateUser">{auth.name}</Link>
         )
       }
       
       <div className="d-flex" role="search">
- 
+      
       <FontAwesomeIcon className='fs-1 p-1 User_id' onClick={list} icon={faCircleUser} />
       
       </div>
