@@ -16,10 +16,10 @@ const Exam = () => {
   const [audioStart, setplay] = useState(false);
   const [randomExam, setRandomExam] = useState(null)
   const [Trigger, setTrigger] = useState(0)
-  const [answercp, setanswercp] = useState([])
+  const [answercp, setanswercp] = useState('')
   const [examName, setexamName] = useState('')
   const [HistoryData, setHistoryData] = useState({
-    exam_name:'',
+    exam_Name:'',
     questions_answers:[]
   })
   
@@ -44,9 +44,11 @@ const Exam = () => {
         },
       })
       .then((resp) => {
+        console.log(resp);
         setExam({...exam, data:resp.data, loading: false, err: null });
       })
       .catch((err) => {
+        console.log(err);
         setExam({
           ...exam,
           loading: false,
@@ -64,7 +66,8 @@ const Exam = () => {
       
     }, [exam.data])
 
-    console.log(randomExam);
+    
+    
     
 
 
@@ -86,14 +89,13 @@ const Exam = () => {
   const handleNextQuestion=()=>{
     if(startIndex+1<randomExam.number_of_questions-1){
     setstartIndex(startIndex+1)
-    console.log(startIndex);
+    
     HandleplayAudios();
   }
   setTrigger(Trigger+1);
-  console.log(radioans);
-  console.log(question);
-  console.log(examName);
+  
 
+  setanswercp(examName)
   setHistoryData({...HistoryData,
     exam_Name:examName,
     questions_answers:[...HistoryData.questions_answers,{question:question,answer:radioans}]
@@ -103,15 +105,21 @@ const Exam = () => {
   
   // HandleRightAnswers(radioans);
 }
+console.log(randomExam);
+console.log(HistoryData);
+let data = JSON.stringify({
+  "exam_Name": `${examName}`,
+  "questions_answers": HistoryData.questions_answers
+});
 
+console.log(data);
 useEffect(() => {
-  console.log(HistoryData);
+  
 
-  if (Trigger===4) {
-    
+  if (Trigger===randomExam?.number_of_questions) {
     axios
       .post(
-        "http://localhost:4000/history",HistoryData,{
+        "http://localhost:4000/history",data,{
           headers:{
             token:auth.token,
             "Content-Type":"application/json"
@@ -123,6 +131,10 @@ useEffect(() => {
       .then((resp) => {
         // setHistoryData({ err: null,  loading: false });
         console.log(resp);
+        setHistoryData({ exam_Name:'',
+        questions_answers:[]
+      }
+      )
        
       })
       .catch((errors) => {
@@ -138,18 +150,16 @@ useEffect(() => {
 
 useEffect(() => {
 
-  console.log(answers);
-  console.log(shufflearr);
-  console.log(radioans);
+ 
   
   // if (startIndex<randomExam.number_of_questions-1) {
     
     if (radioans==answers.RightAnswer){
       setGrade(Grade+1)
-      console.log(Grade);
+     
     }
-    console.log(Trigger);
-    console.log(Grade);
+  
+    
 
 
   
@@ -166,27 +176,8 @@ useEffect(() => {
   
  
   
-  // if (randomExam) {
-  //   randomExam.questions.slice(startIndex,startIndex+1).map((question, index)=>{console.log(question)
-  //     {HandleplayAudios(question.Audio.slice(7))}
-    
-  //      var answers =[
-  //        question.RightAnswer,
-  //        question.Wrong1,
-  //        question.Wrong2,
-  //        question.Wrong3
-  //      ]
-
-  //         console.log(answers);
-  //      
-  //           }
-  //           )    
-  //         }
-          
-  //         const [array, setarray] = useState([])
   var shuffledArray=[]
-  console.log(examName);
-  console.log(question);
+  
   useEffect(() => {
     if(randomExam){
       setanswers (randomExam.questions[startIndex+1])
@@ -242,7 +233,7 @@ useEffect(() => {
               {ans}
               </label>
               </div>
-              ))):(<p className="text-center fs-2">You Got {Grade-1}/{randomExam?.number_of_questions} </p>)
+              ))):(<p className="text-center fs-2">You Got {Grade}/{randomExam?.number_of_questions} </p>)
              }
 
              
