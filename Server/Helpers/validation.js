@@ -16,7 +16,7 @@ const signupvalidation = [
 
 const loginvalidation = [
     check('email', 'please enter a vaild email').isEmail().normalizeEmail({ gmail_remove_dot: true }),
-    check('password', 'password is required min 6 length').isLength({ min: 8 })
+    check('password', 'password is required min 8 length').isLength({ min: 8 })
 ];
 
 const forgetvalidation = [

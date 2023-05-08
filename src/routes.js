@@ -8,13 +8,11 @@ import { ManageTest } from "./components/pages/AdminPages/ManageTests/ManageTest
 import { AddTest } from "./components/pages/AdminPages/ManageTests/AddTest";
 import { UpdateTest } from "./components/pages/AdminPages/ManageTests/UpdateTest";
 import Guest from "./middleware/Guest";
-import Admin from "./middleware/Admin";
-import { ManageUser } from "./components/pages/AdminPages/ManageUsers/ManageUser";
-import { UpdateUser } from "./components/pages/AdminPages/ManageUsers/UpdateUser";
-import { AddUser } from "./components/pages/AdminPages/ManageUsers/AddUser";
-import { Update } from "./components/pages/UserPages/Update";
 
-export const routes = createBrowserRouter([
+
+import History from "./components/pages/UserPages/History";
+
+export const routes = createBrowserRouter(
   {
     path:'',
     element:<App></App>,
@@ -33,67 +31,25 @@ export const routes = createBrowserRouter([
             path: "/register",
             element: <Register></Register>,
           },
-          {
-            path:"/Exam",
-            element:<Exam></Exam>
-          }
-          ,{
-            path:"/Update",
-            element:<Update></Update>
-          }
-
-        ]
+        
+      ]
+      },
+      {
+        path:"/Exam",
+        element:<Exam></Exam>
+      }, 
+      { 
+        path:"/history",
+        element:<History></History>
 
       },
-      
-      
-    //   {
-    //     path:"/manage_test",
-    //     element:<Admin></Admin>,
-    //     children:[{
-    //       path:"",
-    //       element:<ManageTest></ManageTest>
-    //     },
-    //     {
-    //       path:"add_test",
-    //       element:<AddTest></AddTest>
-    //     }, {
-    //       path: ":Namef",
-    //       element: <UpdateTest />,
-          
-    //     }
-       
-        
-
-    //     ]
-    //   }
-    //  , 
-    //   {
-    //     path:"/manage-users",
-    //     element:<Admin></Admin>,
-    //     children:[{
-    //       path:"",
-    //       element:<ManageUser></ManageUser>
-    //     },
-    //     {
-    //       path:"add_user",
-    //       element:<AddUser></AddUser>
-    //     }, {
-    //       path: ":Namef",
-    //       element: <UpdateUser/>,
-          
-    //     }
-       
-        
-
-    //     ]
-    //   }
-      
-        
-    ]},
+      {
+        path:"/manage_test",
+        element:<ManageTest></ManageTest>
+      },
 
 {
 path:'*',
 element:<Navigate to={'/'}></Navigate>,
 }
-]);
+]});
