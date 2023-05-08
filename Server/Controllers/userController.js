@@ -37,10 +37,11 @@ const register = (req, res) => {
                         });
                     }
                     else {
+                        const phone = req.body.phone? "'"+req.body.phone+"'":"NULL";
                         db.query(
                             `INSERT INTO users (name,email,password,image,phone) VALUES ('${req.body.name}',${db.escape(
                                 req.body.email
-                            )},${db.escape(hash)},${path},'${req.body.phone || ""}');`,
+                            )},${db.escape(hash)},${path},${phone});`,
                             (err, result) => {
                                 if (err) {
                                     return res.status(400).send({
@@ -173,7 +174,8 @@ const user_put = async (req, res) => {
                 msg = (!old_password ? " , old password is not correct" : "") + (data.new_password.length < 8 ? " , the new password is required min 8 length" : "");
             }
         }
-        const otherusers = await query(`SELECT name,email,phone FROM users WHERE name='${data.newname || ""}'AND name != '${user.name}' OR phone=${data.phone || null} AND phone!=${user.phone} `);
+        const phone = req.body.phone? "'"+req.body.phone+"'":"NULL";
+        const otherusers = await query(`SELECT name,email,phone FROM users WHERE name='${data.newname || ""}'AND name != '${user.name}' OR phone=${phone} AND phone!='${user.phone}' `);
         if (otherusers[0]) {
             message = (otherusers.find(q => q.name == data.newname) ? "name already in use" : "") + (otherusers.find(q => q.phone == data.phone) ? " , phone already in use" : "");
         }
