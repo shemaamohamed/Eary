@@ -1,14 +1,14 @@
 import React from 'react'
 import Alert from "react-bootstrap/Alert";
 
-import "../../StylePages/AddTest.css"
-import Ear from "../../../Assets/Images/EARR.png"
+import "../StylePages/AddTest.css"
+import Ear from "../../Assets/Images/EARR.png"
 import  { useRef, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 
 import axios from 'axios'
-import{getAuthUser}  from "../../../../helper/Storage"
+import{getAuthUser}  from "../../../helper/Storage"
 export const AddTest = () => {
     const navigate = useNavigate();
 
@@ -35,6 +35,7 @@ export const AddTest = () => {
         formData.append("Wrong2",questions.Wrong2)
         formData.append("Wrong3",questions.Wrong3)
         formData.append("RightAnswer",questions.RightAnswer)
+        formData.append(" Description",questions. Description)
         if(audio.current.files&&audio.current.files[0]){
             formData.append("Audio",audio.current.files[0])
 
@@ -55,6 +56,7 @@ export const AddTest = () => {
                 Wrong3: "",
                 RightAnswer: "",
                 sucsessmessage:"done",
+                Description:""
             });
             audio.current.files=null;
             navigate("/manage_test");
@@ -108,7 +110,10 @@ export const AddTest = () => {
         <input required type='text'placeholder='Answer3' className='Answer'onChange={(e)=>setquestions({...questions ,Wrong3:e.target.value})} ></input>
 
         </div>
-        
+        <div id='answer4'>
+        <input required type='text'placeholder='Description' className='Answer'onChange={(e)=>setquestions({...questions ,Description:e.target.value})} ></input>
+
+        </div>
         <button id='add-T'>AddTest</button>
 
     </div>

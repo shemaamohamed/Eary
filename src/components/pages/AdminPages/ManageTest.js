@@ -1,21 +1,23 @@
 import React from 'react'
-import "../../StylePages/ManageUser.css"
-import { Link, useNavigate } from 'react-router-dom'
+import "../StylePages/ManageUser.css"
+import { Update } from '../UserPages/Update';
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faSquarePen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import  {  useState,useEffect } from 'react'
-import{getAuthUser}  from "../../../../helper/Storage"
+import{getAuthUser}  from "../../../helper/Storage"
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
+import Qs from 'qs'
 
 
 
 
 
 import axios from 'axios'
-import { SideAdmin } from '../../../Shared/SideAdmin';
+import Exam from './../UserPages/Exam';
 export const ManageTest = (props) => {
   const [search, setSearch] = useState("");
 
@@ -25,7 +27,6 @@ export const ManageTest = (props) => {
   const [question,setquestion]=useState({
     loading:true,
     err:null,
-  
     
     results:[],
     reload: 0,
@@ -49,20 +50,8 @@ useEffect(() => {
     data : data
   };
   axios.request(config).then((resp)=>{
-    if(resp.data==''){
-      setquestion({
-        ...question,
-        err:"Empty"
-        ,loading:false
-      }
-        );
-
-    }else{
-      setquestion({...question,results: resp.data,loading:false,err:null});
-
-    }
-    console.log(resp.data);
-
+    setquestion({...question,results: resp.data,loading:false,err:null});
+    
 
   })
   .catch((err)=>{
@@ -124,19 +113,11 @@ let config = {
           </Spinner>
         </div>
       )}
-          <Link to={"add_test"} className="btn">
-          Add New Exam +
-        </Link>
+      
             
 
       <div className='users'>
-      <Link to={"add_test"} className="btn">
-          Add New Exam +
-        </Link>
-     
-
-
-      {question.loading == false && question.err == null && (
+      {question.loading === false && question.err == null && (
         <>
        
          <Form onSubmit={searchExam}>
@@ -150,7 +131,9 @@ let config = {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Form.Group>
-        
+            <Link to={"add_test"} className="btn">
+          Add New Exam +
+        </Link>
           </Form>
         <table> 
         <tbody>
@@ -202,7 +185,7 @@ let config = {
       </>
          
 
-    )}
+         )}
          {/* ERRORS HANDLING  */}
       {question.loading === false && question.err != null && (
         <Alert variant="danger" className="p-2">
@@ -210,6 +193,13 @@ let config = {
         </Alert>
       )}
 
+      {question.loading === false &&
+        question.err == null &&
+        question.results.length === 0 && (
+          <Alert variant="info" className="p-2">
+            No Exam, please try again later !
+          </Alert>
+        )}
         
       </div>
       

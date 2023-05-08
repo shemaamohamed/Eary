@@ -8,7 +8,7 @@ import axios from 'axios'
 
 
 
-export const Update = (email,old_password) => {
+export const UpdateA = (email,old_password) => {
   const login=()=>{
     axios.post("http://localhost:4000/api/login",{
       email:email,
@@ -27,9 +27,10 @@ export const Update = (email,old_password) => {
     const [user,setuser]=useState({
         loading:false,
         name:auth.name,
-        email:auth.email,
         phone:auth.phone,
         newname: auth.name,
+        email: auth.email,
+
         old_password:'',
         new_password:'',
         err:'',
@@ -43,8 +44,6 @@ const updateuser1 =(e)=>{
     setuser({...user,loading:true});
 const qs = require('qs');
 let data = qs.stringify({
-  'name': user.name,
-  'email': user.email,
   'newname': user.newname,
   'phone': user.phone,
   'old_password': user.old_password,
@@ -68,7 +67,6 @@ axios.request(config)
       loading: false,
       err: null,
       name: "",
-      email: "",
       phone: "",
 
       newname:"",
@@ -116,7 +114,7 @@ axios.request(config)
       <div className='box-update'>
         <h1>Update{}</h1>
         <input typeof='text' value={user.newname} required placeholder='username' onChange={(e)=>setuser({...user ,newname:e.target.value})}></input>
-        <input typeof='email' value={user.email}  required placeholder='E-mail' onChange={(e)=>setuser({...user ,email:e.target.value})}></input>
+        <input typeof='email' value={user.email}  required placeholder='E-mail' ></input>
         <input typeof='tel' value={user.phone}  placeholder='Phone Number' onChange={(e)=>setuser({...user ,phone:e.target.value})}></input>
         <input typeof='password' required placeholder='old password' onChange={(e)=>setuser({...user ,old_password:e.target.value})}></input>
         <input typeof='password' required  placeholder='old password or new password'onChange={(e)=>setuser({...user ,new_password:e.target.value})}></input>

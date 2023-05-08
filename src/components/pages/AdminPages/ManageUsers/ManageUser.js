@@ -53,7 +53,7 @@ useEffect(() => {
   .catch((err)=>{
     setusers({
       ...users,
-      err:"something wrong"
+      err:"empty"
       ,loading:false
     }
       );
@@ -105,10 +105,14 @@ let config = {
      </Spinner>
    </div>
  )}
+    
  
        
 
  <div className='users'>
+ <Link to={"add_user"} className="btn">
+     Add New User +
+   </Link>
  {users.loading === false && users.err == null && (
    <>
   
@@ -123,9 +127,7 @@ let config = {
            onChange={(e) => setSearch(e.target.value)}
          />
        </Form.Group>
-       <Link to={"add_user"} className="btn">
-     Add New User +
-   </Link>
+    
      </Form>
    <table> 
    <tbody>
@@ -167,7 +169,7 @@ let config = {
            {q.Audio}
 
            </td>
-           <td><Link className='btn-up' to={":"+ q.name +i} >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
+           <td><Link className='btn-up' to={":"+ q.name} >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
 
            <td><Link className='btn-up' onClick={(e) => {
                deleteExam(q.name);

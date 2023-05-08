@@ -14,6 +14,10 @@ import { UpdateUser } from "./components/pages/AdminPages/ManageUsers/UpdateUser
 import { AddUser } from "./components/pages/AdminPages/ManageUsers/AddUser";
 import { Update } from "./components/pages/UserPages/Update";
 import History from './components/pages/UserPages/History';
+import { ManageExams } from "./components/pages/AdminPages/ManageExams/ManageExams";
+import { AddExams } from "./components/pages/AdminPages/ManageExams/AddExams";
+import { UpdateExam } from "./components/pages/AdminPages/ManageExams/UpdateExam";
+import { UpdateA } from "./components/pages/AdminPages/Update";
 
 export const routes = createBrowserRouter([
   {
@@ -23,7 +27,12 @@ export const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-      },{
+      },
+      {
+        path:"/Update",
+        element:<UpdateA></UpdateA>
+      },
+      {
         element:<Guest></Guest>,
         children:[
           {
@@ -54,7 +63,7 @@ export const routes = createBrowserRouter([
       
       
       {
-        path:"/manage_test",
+        path:"/manage-test",
         element:<Admin></Admin>,
         children:[{
           path:"",
@@ -85,7 +94,7 @@ export const routes = createBrowserRouter([
           path:"add_user",
           element:<AddUser></AddUser>
         }, {
-          path: ":Namef",
+          path: ":Name",
           element: <UpdateUser/>,
           
         }
@@ -93,7 +102,34 @@ export const routes = createBrowserRouter([
         
 
         ]
+      },
+      {
+        path:"/manage-exams",
+        element:<Admin></Admin>,
+        children:[{
+          path:"",
+          element:<ManageExams></ManageExams>
+          
+        }
+        ,
+        
+          {
+            path:"add_exams",
+            element:<AddExams></AddExams>
+          }
+          ,
+          {
+            path:":Name",
+            element:<UpdateExam></UpdateExam>
+          }
+        
+       
+       
+        
+
+        ]
       }
+    
       
         
     ]},

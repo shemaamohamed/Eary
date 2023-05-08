@@ -48,6 +48,7 @@ import { useNavigate } from 'react-router-dom';
     email: "",
     password:"",
     err: "",
+    phone:"",
     loading: false,
     success: null,
   });
@@ -63,6 +64,8 @@ import { useNavigate } from 'react-router-dom';
     formData.append("name", register.name);
     formData.append("email", register.email);
     formData.append("password",register.password);
+    formData.append("phone",register.phone);
+
     console.log(image.current.files);
     // only one image 
     if (image.current.files && image.current.files[0]) {
@@ -78,6 +81,8 @@ import { useNavigate } from 'react-router-dom';
           name: "",
           password: "",
           email:"",
+          phone:"",
+
           err: null,
           loading: false,
           success: "user Created Successfully !",
@@ -121,6 +126,9 @@ import { useNavigate } from 'react-router-dom';
       }}></input>
         <input type="password" required placeholder='password'value={register.password} onChange={(e) => {
           setRegister({...register,password:e.target.value})
+        }}></input>
+        <input type="tel" required placeholder='phone'value={register.phone} onChange={(e) => {
+          setRegister({...register,phone:e.target.value})
         }}></input>
         <div class="mb-3">
   <label for="formFile" class="form-label">select photo</label>

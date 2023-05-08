@@ -11,45 +11,44 @@ import {   useNavigate } from 'react-router-dom'
 
 
 
-export const UpdateUser = () => {
-    const { Name }=useParams();
+export const UpdateExam = () => {
+    const {Name}=useParams();
+    console.log(Name);
     const navigate = useNavigate();
 
-
-    
-    // const value=Namef.replace(/\D/g, "")
     //  const source = Namef.replace(/[0-9]/g, '');
-    //  const soc=source.slice(1,source.length)
-    //  console.log(soc);
+      const soc=Name.slice(1,Name.length)
+      console.log(soc);
     const auth =getAuthUser();
     const [userr,setuser]=useState({
         loading:false,
-        err:null,
-        newname:"",
-        email: "",
-        phone: "",
-        is_accepted: "",
-        name:""
-        
+       Name:"",
+       question0:"",
+       question1:"",
+       question2:"",
+       question3:"",
+       q1:"",
+       q2:"",
+       q3:"",
+       q4:"",
 
 
     }) 
-    const updateExam=(e)=>{
+    const update_Exam=(e)=>{
         e.preventDefault();
         setuser({...userr,loading:true});
         const qs = require('qs');
         let data = qs.stringify({
-            'name': userr.name,
-            'email': userr.email,
-            'is_accepted': userr.is_accepted,
-            'phone':userr.phone,
-            'newname': userr.newname,
+          
+            'Name': userr.Name,
+            'questions': [userr.q1,userr.q2,userr.q3,userr.q4],
+
         });
 
         let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: 'http://localhost:4000/useradmin',
+            url: 'http://localhost:4000/exams',
             headers: {
                 'token': auth.token,
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -63,14 +62,18 @@ axios.request(config)
             setuser({
                 loading: false,
                 err: null,
-                name: "",
-                email: "",
-                phone: "",
-                is_accepted: "",
-                newname:""
+                Name:"",
+                question0: "",
+                question1: "",
+                question2: "",
+                question3: "",
+                q1:"",
+                q2:"",
+                q3:"",
+                q4:"",
               
             });
-            navigate("/manage-users");
+            navigate("/manage-exams")
 
 
         })
@@ -86,36 +89,30 @@ axios.request(config)
     };
     useEffect(() => {
         
-        let data = JSON.stringify({
-            "name": Name
-          });
+    
           
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:4000/useradmin',
+            url: 'http://localhost:4000/exams',
             headers: { 
               'token': auth.token, 
-              'Content-Type': 'application/json'
             },
-            data : data
           };
           
           axios.request(config)
           .then((resp) => {
-            resp.data.filter((q)=> q.name==Name).
+            resp.data.filter((q)=> q.Name== soc).
             map(q=>{
                 setuser({
                     ...userr,
-                    phone: q.phone,
-                    email: q.email,
-                    is_accepted: q.is_accepted,
-                    newname:q.name,
-                    name:q.name,
-                    last_login:q.last_login,
-                    created_at:q.created_at,
-                    updated_at:q.updated_at,
-                    last_score:q.last_score,
+                    Name:q.Name,
+                    question0: q.questions[0].Name,
+                    question1:  q.questions[1].Name,
+                    question2:  q.questions[2].Name,
+                    question3:  q.questions[3].Name,
+                   
+                
 
                 
                   });  
@@ -134,7 +131,7 @@ axios.request(config)
       }, [userr.reload]);
 
   return (
-    <form onSubmit={updateExam}>
+    <form onSubmit={update_Exam}>
         {userr.err &&(
             
             <Alert variant="danger" class="fade p-2 alert alert-err show">
@@ -162,16 +159,20 @@ axios.request(config)
     
     <div className='add_q'>
     <div id='question'>
-    <input required type='text' placeholder='name' className='Answer' value={userr.newname} onChange={(e)=>setuser({...userr ,newname:e.target.value})}></input>        </div>
+    <input required type='text' placeholder='name' className='Answer' value={userr.Name} onChange={(e)=>setuser({...userr ,newname:e.target.value})}></input>        </div>
         <div id='answer1'>
-        <input  type='tel' placeholder='Phone' value={userr.phone} className='Answer' onChange={(e)=>setuser({...userr ,phone:e.target.value})}></input>           
+        <input  type='text' placeholder='question1' value={userr.question0} className='Answer' onChange={(e)=>setuser({...userr ,question0:e.target.value,q1:e.target.value})}></input>           
         </div>
         <div id='answer2'>
-        <input required type="email" placeholder='email' className='Answer' value={userr.email} onChange={(e)=>setuser({...userr ,email:e.target.value})} ></input>
+        <input required type="text" placeholder='question2' className='Answer' value={userr.question1} onChange={(e)=>setuser({...userr ,question1:e.target.value,q2:e.target.value})} ></input>
 
         </div>
         <div id='answer3'>
-        <input required type="" placeholder='is_accepted' value={userr.is_accepted} className='Answer'onChange={(e)=>setuser({...userr ,is_accepted:e.target.value})} ></input>
+        <input required type="text" placeholder='question3' value={userr.question2} className='Answer'onChange={(e)=>setuser({...userr ,question2:e.target.value,q3:e.target.value})} ></input>
+
+        </div>
+        <div id='answer4'>
+        <input required type="text" placeholder='question4' value={userr.question3} className='Answer'onChange={(e)=>setuser({...userr ,question3:e.target.value,q4:e.target.value})} ></input>
 
         </div>
       
