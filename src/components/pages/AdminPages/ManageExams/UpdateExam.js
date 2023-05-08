@@ -22,7 +22,7 @@ export const UpdateExam = () => {
     const auth =getAuthUser();
     const [userr,setuser]=useState({
         loading:false,
-       Name:"",
+       newname:"",
        question0:"",
        question1:"",
        question2:"",
@@ -31,6 +31,7 @@ export const UpdateExam = () => {
        q2:"",
        q3:"",
        q4:"",
+       Name:"",
 
 
     }) 
@@ -39,9 +40,11 @@ export const UpdateExam = () => {
         setuser({...userr,loading:true});
         const qs = require('qs');
         let data = qs.stringify({
-          
             'Name': userr.Name,
-            'questions': [userr.q1,userr.q2,userr.q3,userr.q4],
+
+          
+            'NewName': userr.newname,
+            'questions': [userr.q1,userr.q2,userr.q3,userr.q4,userr.q5],
 
         });
 
@@ -62,15 +65,19 @@ axios.request(config)
             setuser({
                 loading: false,
                 err: null,
-                Name:"",
+                newname:"",
                 question0: "",
                 question1: "",
                 question2: "",
                 question3: "",
+                question4: "",
+                Name:"",
+
                 q1:"",
                 q2:"",
                 q3:"",
                 q4:"",
+                q5:"",
               
             });
             navigate("/manage-exams")
@@ -104,20 +111,24 @@ axios.request(config)
           .then((resp) => {
             resp.data.filter((q)=> q.Name== soc).
             map(q=>{
+                
                 setuser({
                     ...userr,
                     Name:q.Name,
+                    newname:q.Name,
                     question0: q.questions[0].Name,
                     question1:  q.questions[1].Name,
                     question2:  q.questions[2].Name,
                     question3:  q.questions[3].Name,
+                    question4:  q.questions[q.number_of_questions-1].Name,
                    
                 
 
                 
-                  });  
+                  });
 
             })
+            console.log(resp);
             
           })
           .catch((err) => {
@@ -159,7 +170,7 @@ axios.request(config)
     
     <div className='add_q'>
     <div id='question'>
-    <input required type='text' placeholder='name' className='Answer' value={userr.Name} onChange={(e)=>setuser({...userr ,newname:e.target.value})}></input>        </div>
+    <input required type='text' placeholder='name' className='Answer' value={userr.newname} onChange={(e)=>setuser({...userr ,newname:e.target.value})}></input>        </div>
         <div id='answer1'>
         <input  type='text' placeholder='question1' value={userr.question0} className='Answer' onChange={(e)=>setuser({...userr ,question0:e.target.value,q1:e.target.value})}></input>           
         </div>
@@ -173,6 +184,10 @@ axios.request(config)
         </div>
         <div id='answer4'>
         <input required type="text" placeholder='question4' value={userr.question3} className='Answer'onChange={(e)=>setuser({...userr ,question3:e.target.value,q4:e.target.value})} ></input>
+
+        </div>
+        <div id='answer4'>
+        <input required type="text" placeholder='question5' value={userr.question4} className='Answer'onChange={(e)=>setuser({...userr ,question4:e.target.value,q5:e.target.value})} ></input>
 
         </div>
       
