@@ -162,6 +162,8 @@ let config = {
             <th>questions</th>
             <th>questions</th>
             <th>questions</th>
+            <th>questions</th>
+
             
             <th></th>
             <th></th>
@@ -181,6 +183,7 @@ let config = {
                         <td>{q.questions[1].Name}</td>
                         <td>{q.questions[2].Name}</td>
                         <td>{q.questions[3].Name}</td>
+                        <td></td>
                         <td><Link className='btn-up' to={":"+ q.Name} >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
 
                               <td><Link className='btn-up' onClick={(e) => {
@@ -198,6 +201,9 @@ let config = {
                         <td>{q.questions[1].Name}</td>
                         <td>{q.questions[2].Name}</td>
                         <td></td>
+                        <td></td>
+                        
+                        <td></td>
                         <td><Link className='btn-up' to={":"+ q.Name } >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
 
                               <td><Link className='btn-up' onClick={(e) => {
@@ -212,6 +218,7 @@ let config = {
                         <>
                         <td>{q.questions[0].Name}</td>
                         <td>{q.questions[1].Name}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td><Link className='btn-up' to={":"+ q.Name } >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
@@ -230,6 +237,26 @@ let config = {
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td><Link className='btn-up' to={":"+ q.Name } >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
+
+                              <td><Link className='btn-up' onClick={(e) => {
+                                  deleteExam(q.Name);
+                              }}>delete <FontAwesomeIcon icon={faTrash} /></Link></td>
+                        </>
+
+                    )
+                }
+                
+                {
+                     q.questions.length==5&&(
+                        <>
+                        <td>{q.questions[0].Name}</td>
+                        <td>{q.questions[1].Name}</td>
+                        <td>{q.questions[2].Name}</td>
+                        <td>{q.questions[3].Name}</td>
+                        <td>{q.questions[4].Name}</td>
+                       
                         <td><Link className='btn-up' to={":"+ q.Name } >update <FontAwesomeIcon icon={faSquarePen} /></Link></td>
 
                               <td><Link className='btn-up' onClick={(e) => {
